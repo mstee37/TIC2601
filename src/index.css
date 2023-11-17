@@ -42,3 +42,10 @@ code {
 	background-color: yellow;
 	clear: both;
 }
+
+
+/* Notification */
+.noti-box{
+	height:75px;
+	width :500px;
+  }

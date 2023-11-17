@@ -10,6 +10,9 @@ import LoginPageAdmin from "./pages/LoginPageAdmin";
 import MainPageStudent from "./pages/MainPageStudent";
 import MainPageProf from "./pages/MainPageProf";
 import MainPageAdmin from "./pages/MainPageAdmin";
+import SendNoti from "./pages/SendNoti";
+import ScheduleClass from "./pages/ScheduleClass";
+import RegisterCourse from "./pages/RegisterCourse";
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
           <Route path="MainPageStudent" element={<MainPageStudent />} />
           <Route path="MainPageProf" element={<MainPageProf />} />
           <Route path="MainPageAdmin" element={<MainPageAdmin />} />
+          <Route path="SendNoti" element={<SendNoti/>}/>
+          <Route path="RegisterCourse" element={<RegisterCourse/>}/>
+          <Route path="ScheduleClass" element={<ScheduleClass/>}/>
           <Route path="*" element={<Error />} />
 
         </Route>
