@@ -1,33 +1,27 @@
 import { useState } from 'react';
 import DropdownCourse from "../components/DropdownCourse";
 import InputStudentNameCourse from "../components/InputStudentNameCourse";
-import RankingCourse from "../components/RankingCourse";
 
-function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNameToEdit, courseNameToEdit, setCourseNameToEdit, courseRankToEdit, setCourseRankToEdit, editMode, setEditMode }) {
+function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNameToEdit, courseNameToEdit, setCourseNameToEdit, editMode, setEditMode }) {
     function processForm() {
         console.log('InputFormCourse: processForm');
 
         if (editMode === 'create') {
             var newCourse = { 
                 'courseName': courseNameToEdit, 
-                'studentName': studentNameToEdit,  
-                'courseRank': courseRankToEdit 
+                'studentName': studentNameToEdit
             };
             setCourses(courses.concat([newCourse]));
-            
         } else if (editMode === 'edit') {
-
             var course = courses.find(course => course.courseName === courseNameToEdit);
             course.courseName = courseNameToEdit;
             course.studentName = studentNameToEdit;
-            course.courseRank = courseRankToEdit;
 
             setEditMode('create');
         }
 
         setStudentNameToEdit('');
         setCourseNameToEdit('Business Analytics');
-        setCourseRankToEdit('1');
     }
 
     return (
@@ -35,13 +29,12 @@ function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNam
             <h3>Register Course</h3>
             <DropdownCourse value={courseNameToEdit} setValue={setCourseNameToEdit} />
             <InputStudentNameCourse label='Student' value={studentNameToEdit} setValue={setStudentNameToEdit} />
-            <RankingCourse value={courseRankToEdit} setValue={setCourseRankToEdit} />
             <input type={'button'} value='Submit' onClick={processForm} />
         </>
     );
 }
 
-function TableRowsCourses({ courses, setCourses, studentNameToEdit, setStudentNameToEdit, courseNameToEdit, setCourseNameToEdit, courseRankToEdit, setCourseRankToEdit, setEditMode }) {
+function TableRowsCourses({ courses, setCourses, studentNameToEdit, setStudentNameToEdit, courseNameToEdit, setCourseNameToEdit, setEditMode }) {
 
     function updateCourse(event, courseName) {
         setEditMode('edit');
@@ -50,7 +43,6 @@ function TableRowsCourses({ courses, setCourses, studentNameToEdit, setStudentNa
         var course = courses.find(course => course.courseName === courseName);
         setCourseNameToEdit(course.courseName);
         setStudentNameToEdit(course.studentName);
-        setCourseRankToEdit(course.courseRank);
     }
 
     function deleteCourse(event, courseName) {
@@ -63,7 +55,6 @@ function TableRowsCourses({ courses, setCourses, studentNameToEdit, setStudentNa
                 <tr key={course.courseName}>
                     <td>{course.courseName}</td>
                     <td>{course.studentName}</td>
-                    <td>{course.courseRank}</td>
                     <td>
                         <button onClick={event => updateCourse(event, course.courseName)}>Update</button> |
                         <button onClick={event => deleteCourse(event, course.courseName)}>Delete</button>
@@ -74,7 +65,7 @@ function TableRowsCourses({ courses, setCourses, studentNameToEdit, setStudentNa
     );
 }
 
-function TableCourses({ courses, setCourses, setStudentNameToEdit, setCourseNameToEdit, setCourseRankToEdit, setEditMode }) {
+function TableCourses({ courses, setCourses, setStudentNameToEdit, setCourseNameToEdit, setEditMode }) {
     return (
         <>
             <h3>Registered Courses</h3>
@@ -83,12 +74,11 @@ function TableCourses({ courses, setCourses, setStudentNameToEdit, setCourseName
                     <tr>
                         <th>Course Name</th>
                         <th>Student Name</th>
-                        <th>Course Rank</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <TableRowsCourses courses={courses} setCourses={setCourses} setStudentNameToEdit={setStudentNameToEdit} setCourseNameToEdit={setCourseNameToEdit} setCourseRankToEdit={setCourseRankToEdit} setEditMode={setEditMode} />
+                    <TableRowsCourses courses={courses} setCourses={setCourses} setStudentNameToEdit={setStudentNameToEdit} setCourseNameToEdit={setCourseNameToEdit} setEditMode={setEditMode} />
                 </tbody>
             </table>
         </>
@@ -100,12 +90,35 @@ export default function CourseRegistration() {
     const [editMode, setEditMode] = useState('create');
     const [courseNameToEdit, setCourseNameToEdit] = useState('Business Analytics');
     const [studentNameToEdit, setStudentNameToEdit] = useState('');
-    const [courseRankToEdit, setCourseRankToEdit] = useState('1');
+
+    const handleSubmit = async () => {
+        try {
+            const response = await fetch('http://your-backend-api.com/api/courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ courses }),
+            });
+
+            if (response.ok) {
+                console.log('Courses submitted successfully');
+
+            } else {
+                console.error('Failed to submit courses');
+
+            }
+        } catch (error) {
+            console.error('Error submitting courses:', error);
+        
+        }
+    };
 
     return (
         <>
-            <InputFormCourse setCourses={setCourses} courses={courses} studentNameToEdit={studentNameToEdit} setStudentNameToEdit={setStudentNameToEdit} courseNameToEdit={courseNameToEdit} setCourseNameToEdit={setCourseNameToEdit} courseRankToEdit={courseRankToEdit} setCourseRankToEdit={setCourseRankToEdit} editMode={editMode} setEditMode={setEditMode} />
-            <TableCourses courses={courses} setCourses={setCourses} setStudentNameToEdit={setStudentNameToEdit} setCourseNameToEdit={setCourseNameToEdit} setCourseRankToEdit={setCourseRankToEdit} setEditMode={setEditMode} />
+            <InputFormCourse setCourses={setCourses} courses={courses} studentNameToEdit={studentNameToEdit} setStudentNameToEdit={setStudentNameToEdit} courseNameToEdit={courseNameToEdit} setCourseNameToEdit={setCourseNameToEdit} editMode={editMode} setEditMode={setEditMode} />
+            <TableCourses courses={courses} setCourses={setCourses} setStudentNameToEdit={setStudentNameToEdit} setCourseNameToEdit={setCourseNameToEdit} setEditMode={setEditMode} />
+            <button onClick={handleSubmit}>Submit Courses to Database</button>
         </>
     );
 }
