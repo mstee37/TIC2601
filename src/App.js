@@ -15,6 +15,7 @@ import ScheduleClass from "./pages/ScheduleClass";
 import RegisterCourse from "./pages/RegisterCourse";
 import SendFeedback from "./pages/Feedback";
 import MarkAttendance from "./pages/MarkAttendance";
+import CourseCreation from "./pages/CourseCreation";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="ScheduleClass" element={<ScheduleClass/>}/>
           <Route path="Feedback" element={<SendFeedback/>}/>
           <Route path="MarkAttendance" element={<MarkAttendance/>}/>
+          <Route path="CourseCreation" element={<CourseCreation/>}/>
           <Route path="*" element={<Error />} />
 
         </Route>
