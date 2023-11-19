@@ -14,6 +14,7 @@ import SendNoti from "./pages/SendNoti";
 import ScheduleClass from "./pages/ScheduleClass";
 import RegisterCourse from "./pages/RegisterCourse";
 import SendFeedback from "./pages/Feedback";
+import MarkAttendance from "./pages/MarkAttendance";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="RegisterCourse" element={<RegisterCourse/>}/>
           <Route path="ScheduleClass" element={<ScheduleClass/>}/>
           <Route path="Feedback" element={<SendFeedback/>}/>
+          <Route path="MarkAttendance" element={<MarkAttendance/>}/>
           <Route path="*" element={<Error />} />
 
         </Route>

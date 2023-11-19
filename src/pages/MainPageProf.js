@@ -5,7 +5,7 @@ export default function MainPageProf() {
         <>
             <h2>Professor Main Page</h2>
             <ul>
-                <li><Link to='/MarkAttendence'>Mark Attendence</Link></li>
+                <li><Link to='/MarkAttendance'>Mark Attendance</Link></li>
             </ul>
         </>
     );
