@@ -26,11 +26,29 @@ function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNam
 
     return (
         <>
-            <h3>Register Course</h3>
-            <DropdownCourse value={courseNameToEdit} setValue={setCourseNameToEdit} />
-            <InputStudentNameCourse label='Student' value={studentNameToEdit} setValue={setStudentNameToEdit} />
-            <input type={'button'} value='Submit' onClick={processForm} />
-        </>
+        <h3>Register Course</h3>
+        <table border={'1'} style={{ width: '100%', position: "relative" }}>
+            <tbody>
+                <tr>
+                    <td width={'20%'}><b>Course Name</b></td>
+                    <td>
+                        <DropdownCourse value={courseNameToEdit} setValue={setCourseNameToEdit} />
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Student Name</b></td>
+                    <td>
+                        <InputStudentNameCourse label='Student' value={studentNameToEdit} setValue={setStudentNameToEdit} />
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={'2'} style={{ textAlign: 'center' }}>
+                        <input type={'button'} value='Register' onClick={processForm} />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </>
     );
 }
 
@@ -118,7 +136,7 @@ export default function CourseRegistration() {
         <>
             <InputFormCourse setCourses={setCourses} courses={courses} studentNameToEdit={studentNameToEdit} setStudentNameToEdit={setStudentNameToEdit} courseNameToEdit={courseNameToEdit} setCourseNameToEdit={setCourseNameToEdit} editMode={editMode} setEditMode={setEditMode} />
             <TableCourses courses={courses} setCourses={setCourses} setStudentNameToEdit={setStudentNameToEdit} setCourseNameToEdit={setCourseNameToEdit} setEditMode={setEditMode} />
-            <button onClick={handleSubmit}>Submit Courses to Database</button>
+            <button onClick={handleSubmit}>Confirm</button>
         </>
     );
 }
