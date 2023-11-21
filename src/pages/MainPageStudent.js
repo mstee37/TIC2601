@@ -7,7 +7,7 @@ export default function MainPageStudent() {
             <ul>
                 <li><Link to='/RegisterCourse'>Register Course</Link></li>
                 <li><Link to='/Feedback'>Feedback on Class</Link></li>
-                <li><Link to='/AccessTranscript'>Access Academic Transcript</Link></li>
+                <li><Link to='/Transcript'>Access Academic Transcript</Link></li>
             </ul>
         </>
     );
