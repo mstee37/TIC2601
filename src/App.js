@@ -16,6 +16,7 @@ import RegisterCourse from "./pages/RegisterCourse";
 import SendFeedback from "./pages/Feedback";
 import MarkAttendance from "./pages/MarkAttendance";
 import CourseCreation from "./pages/CourseCreation";
+import Transcript from "./pages/Transcript";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="Feedback" element={<SendFeedback/>}/>
           <Route path="MarkAttendance" element={<MarkAttendance/>}/>
           <Route path="CourseCreation" element={<CourseCreation/>}/>
+          <Route path="Transcript" element={<Transcript/>}/>
           <Route path="*" element={<Error />} />
 
         </Route>
