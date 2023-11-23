@@ -10,7 +10,7 @@ export default function MarkAttendance() {
     // fetch from dbms with API endpoint
     useEffect(() => {
         if (classId && classDate) {
-            fetch(`API_ENDPOINT/students?classId=${classId}&date=${classDate}`)
+            fetch(`http://localhost:3000/students?classId=${classId}&date=${classDate}`)
                 .then(response => response.json())
                 .then(data => setStudents(data.map(student => ({ ...student, isPresent: false }))))
                 .catch(error => console.error('Error fetching students:', error));
