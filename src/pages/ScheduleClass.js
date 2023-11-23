@@ -18,7 +18,7 @@ StartTimeToEdit, setStartTimeToEdit, EndTimeToEdit, setEndTimeToEdit}){
             setClasses(classes.concat([newClasses]));
         }
         else if (editMode === 'edit'){
-            Changes
+            
             var class_selected = classes.find(class_selected=>class_selected.Cid === CidToEdit);
             class_selected.Cid = CidToEdit;
             class_selected.ModID = ModIDToEdit;
