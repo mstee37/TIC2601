@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {useState} from "react"
 
 import Layout from "./pages/Layout";
 import Index from "./pages/Index";
@@ -17,14 +18,25 @@ import SendFeedback from "./pages/Feedback";
 import MarkAttendance from "./pages/MarkAttendance";
 import CourseCreation from "./pages/CourseCreation";
 import Transcript from "./pages/Transcript";
+import LoginPage from "./pages/LoginPage";
+import Login from "./pages/Login";
+import { UserContext } from "./contexts/UserContext";
 
 function App() {
+  //<Route path="Index" element={<Index />} />
+  const [user, setUser] = useState('');
+
   return (
+
+    <UserContext.Provider value={{user, setUser}}>
     <BrowserRouter>
       <Routes>
+
+        
         <Route path="/" element={<Layout />}>
-          <Route index element={<Index />} />
+          <Route index element={<Login/>} />
           <Route path="Index" element={<Index />} />
+          <Route path="Login" element={<Login />} />
           <Route path="LoginPageStudent" element={<LoginPageStudent />} />
           <Route path="LoginPageProf" element={<LoginPageProf />} />
           <Route path="LoginPageAdmin" element={<LoginPageAdmin />} />
@@ -41,8 +53,11 @@ function App() {
           <Route path="*" element={<Error />} />
 
         </Route>
+        
+
       </Routes>
     </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 
