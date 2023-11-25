@@ -13,6 +13,7 @@ router.route('/')
             res.send(students);
         })
     })
+    
     .post((req, res) => { // to create student details
         console.log('POST: /student');
         var SID = req.body.SID;

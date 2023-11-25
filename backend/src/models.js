@@ -197,7 +197,7 @@ const ClassTaken = sequelize.define('ClassTaken', {
       },
       Feedback: {
         type: DataTypes.STRING(500),
-        defaultValue: null,
+        // defaultValue: null,
       }
 }, {
       freezeTableName: true
@@ -259,10 +259,10 @@ const Notification = sequelize.define('Notification', {
       CourseID: {
         type: DataTypes.STRING(10),
       },
-      DateTime: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
+      // DateTime: {
+      //   type: DataTypes.DATE,
+      //   allowNull: false,
+      // },
       Message: {
         type: DataTypes.STRING(500),
         allowNull: false,
