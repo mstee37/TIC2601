@@ -15,6 +15,7 @@ router.route('/')
     })
     .post((req, res) => { // to create module details
         console.log('POST: /module');
+        console.log(req.body)
         var MID = req.body.MID;
         var MName = req.body.MName;
         var MCredit = req.body.MCredit;

@@ -32,14 +32,19 @@ router.route('/')
         var ClsID = req.body.ClsID;
         var Feedback = req.body.Feedback; 
 
-        models.ClassTaken.findByPk(StuID,ClsID).then((classTaken) => {
+        models.ClassTaken.findByPk(StuID).then((classTaken) => {
             if (classTaken === null) {
                 res.sendStatus(404);
             }
             else {
-                classTaken.Feedback = Feedback;
-                classTaken.save().then(() => {
-                    res.sendStatus(200);
+                models.ClassTaken.findByPk(ClsID).then((classTaken) =>{
+                    if (classTaken === null) {
+                        res.sendStatus(404);
+                    }
+                    classTaken.Feedback = Feedback;
+                    classTaken.save().then(() => {
+                        res.sendStatus(200);
+                    })
                 })
             }
         })
