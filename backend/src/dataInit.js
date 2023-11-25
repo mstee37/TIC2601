@@ -54,29 +54,26 @@ const userData = [
   ];
   
   const studentData = [
-    { SID: 'S001', SCourseID: 'CS101', SName: 'John Doe', SBatch: '2022/23', SYear: 2 },
-    { SID: 'S002', SCourseID: 'CS102', SName: 'Jane Smith', SBatch: '2022/23', SYear: 2 },
-    { SID: 'S003', SCourseID: 'CS103', SName: 'Michael Johnson', SBatch: '2022/23', SYear: 2 },
-    { SID: 'S004', SCourseID: 'CS104', SName: 'Emily Davis', SBatch: '2022/23', SYear: 2 },
-    { SID: 'S005', SCourseID: 'CS105', SName: 'Christopher Wilson', SBatch: '2022/23', SYear: 2 },
-    { SID: 'S006', SCourseID: 'CS101', SName: 'Olivia Brown', SBatch: '2023/24', SYear: 1 },
-    { SID: 'S007', SCourseID: 'CS102', SName: 'Daniel Turner', SBatch: '2023/24', SYear: 1 },
-    { SID: 'S008', SCourseID: 'CS103', SName: 'Sophia White', SBatch: '2023/24', SYear: 1 },
-    { SID: 'S009', SCourseID: null, SName: 'Liam Martinez', SBatch: null, SYear: null },
-    { SID: 'S010', SCourseID: null, SName: 'Ava Smith', SBatch: null, SYear: null },
+    { SID: 'S001', SCourseID: 'CS101', SName: 'John Doe', SBatch: '2022/23', SYear: 2, SStatus:'A' },
+    { SID: 'S002', SCourseID: 'CS102', SName: 'Jane Smith', SBatch: '2022/23', SYear: 2, SStatus:'A' },
+    { SID: 'S003', SCourseID: 'CS103', SName: 'Michael Johnson', SBatch: '2022/23', SYear: 2, SStatus:'A' },
+    { SID: 'S004', SCourseID: 'CS104', SName: 'Emily Davis', SBatch: '2022/23', SYear: 2, SStatus:'A' },
+    { SID: 'S005', SCourseID: 'CS105', SName: 'Christopher Wilson', SBatch: '2022/23', SYear: 2, SStatus:'A' },
+    { SID: 'S006', SCourseID: 'CS101', SName: 'Olivia Brown', SBatch: '2023/24', SYear: 1, SStatus:'A' },
+    { SID: 'S007', SCourseID: 'CS102', SName: 'Daniel Turner', SBatch: '2023/24', SYear: 1, SStatus:'A' },
+    { SID: 'S008', SCourseID: 'CS103', SName: 'Sophia White', SBatch: '2023/24', SYear: 1, SStatus:'A' },
+    { SID: 'S009', SCourseID: 'CS105', SName: 'Liam Martinez', SBatch: null, SYear: null, SStatus: 'R'},
+    { SID: 'S010', SCourseID: 'CS101', SName: 'Ava Smith', SBatch: null, SYear: null, SStatus: 'R' },
+    { SID: 'S011', SCourseID: null, SName: 'Loraine Taylor', SBatch: null, SYear: null, SStatus: null},
+    { SID: 'S012', SCourseID: null, SName: 'Bruno Caleb', SBatch: null, SYear: null, SStatus: null },
   ];
   
   const moduleData = [
-    { MID: 'M001', MName: 'Introduction to Programming', MCredit: 4, MTerm: 1, ProfID: 'P001'
-    , MPreRequisite: null },
-    { MID: 'M002', MName: 'Database Management Systems', MCredit: 4, MTerm: 2, ProfID: 'P002'
-     ,MPreRequisite: 'M001' },
-    { MID: 'M003', MName: 'Introduction to Business Analytics', MCredit: 4, MTerm: 1, ProfID: 'P003'
-     ,MPreRequisite: 'M002' },
-    { MID: 'M004', MName: 'Predictive Analytics', MCredit: 4, MTerm: 2, ProfID: 'P004'
-     ,MPreRequisite: 'M003' },
-    { MID: 'M005', MName: 'Introduction to Mathematics', MCredit: 4, MTerm: 1, ProfID: 'P005'
-     ,MPreRequisite: 'M004' }
+    { MID: 'M001', MName: 'Introduction to Programming', MCredit: 4, MTerm: 1, ProfID: 'P001', MPreRequisite: null },
+    { MID: 'M002', MName: 'Database Management Systems', MCredit: 4, MTerm: 2, ProfID: 'P002', MPreRequisite: 'M001' },
+    { MID: 'M003', MName: 'Introduction to Business Analytics', MCredit: 4, MTerm: 1, ProfID: 'P003', MPreRequisite: 'M002' },
+    { MID: 'M004', MName: 'Predictive Analytics', MCredit: 4, MTerm: 2, ProfID: 'P004', MPreRequisite: 'M003' },
+    { MID: 'M005', MName: 'Introduction to Mathematics', MCredit: 4, MTerm: 1, ProfID: 'P005', MPreRequisite: 'M004' }
   ];
   
   const moduleCourseData = [
@@ -87,18 +84,41 @@ const userData = [
     { CourseCourseID: 'CS103', ModuleMID: 'M003' },
     { CourseCourseID: 'CS103', ModuleMID: 'M004' },
     { CourseCourseID: 'CS103', ModuleMID: 'M005' },
+    { CourseCourseID: 'CS104', ModuleMID: 'M003' },
+    { CourseCourseID: 'CS104', ModuleMID: 'M004' },
+    { CourseCourseID: 'CS105', ModuleMID: 'M001' },
+    { CourseCourseID: 'CS105', ModuleMID: 'M004' },
+    { CourseCourseID: 'CS105', ModuleMID: 'M005' }
   ];
   
   const classData = [
-    { CID: 'C001', ModID: 'M001', RoomNo: 'COM1-B1-1002', StartDate: '2023-01-02', EndDate: '2023-05-01', StartTime: '18:30:00', EndTime: '21:30:00' },
-    { CID: 'C002', ModID: 'M002', RoomNo: 'COM1-B2-1005', StartDate: '2023-01-02', EndDate: '2023-05-01', StartTime: '18:30:00', EndTime: '21:30:00' },
+    { CID: 'C001', ModID: 'M001', RoomNo: 'COM1-B1-1002', StartDate: '2023-08-02', EndDate: '2023-11-01', StartTime: '18:30:00', EndTime: '21:30:00' },
+    { CID: 'C002', ModID: 'M002', RoomNo: 'COM1-B2-1005', StartDate: '2023-01-02', EndDate: '2023-05-02', StartTime: '18:30:00', EndTime: '21:30:00' },
+    { CID: 'C003', ModID: 'M003', RoomNo: 'COM2-B2-2103', StartDate: '2023-08-03', EndDate: '2023-11-03', StartTime: '18:30:00', EndTime: '21:30:00' },
+    { CID: 'C004', ModID: 'M004', RoomNo: 'COM2-B1-1023', StartDate: '2023-01-03', EndDate: '2023-05-03', StartTime: '19:00:00', EndTime: '20:30:00' },
+    { CID: 'C005', ModID: 'M005', RoomNo: 'COM1-B1-2018', StartDate: '2023-08-04', EndDate: '2023-11-04', StartTime: '18:00:00', EndTime: '21:00:00' }
+
   ];
   
   const classTakenData = [
     { StuID: 'S001', ClsID: 'C001', Feedback: null },
+    { StuID: 'S002', ClsID: 'C001', Feedback: null },
+    { StuID: 'S005', ClsID: 'C001', Feedback: null },
     { StuID: 'S006', ClsID: 'C001', Feedback: null },
+    { StuID: 'S001', ClsID: 'C002', Feedback: null },
+    { StuID: 'S002', ClsID: 'C002', Feedback: null },
+    { StuID: 'S007', ClsID: 'C002', Feedback: null },
+    { StuID: 'S003', ClsID: 'C003', Feedback: null },
+    { StuID: 'S004', ClsID: 'C003', Feedback: null },   
+    { StuID: 'S003', ClsID: 'C004', Feedback: null },
+    { StuID: 'S004', ClsID: 'C004', Feedback: null },
+    { StuID: 'S005', ClsID: 'C004', Feedback: null },
+    { StuID: 'S003', ClsID: 'C005', Feedback: null },
+    { StuID: 'S005', ClsID: 'C005', Feedback: null },
+    { StuID: 'S008', ClsID: 'C005', Feedback: null }
   ];
-  
+
+
   
 // models.sequelize.sync().then(() => {
 //   console.log('models loaded');
