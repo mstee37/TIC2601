@@ -35,6 +35,8 @@ const userData = [
     { UID: "S008", URole: "student", UPassword: "N@tal1e789", UEmail: "s008@edu.sg" },
     { UID: "S009", URole: "student", UPassword: "Ol!ver9012", UEmail: "s009@edu.sg" },
     { UID: "S010", URole: "student", UPassword: "P@ige3456", UEmail: "s010@edu.sg" },
+    { UID: "S011", URole: "student", UPassword: "L0rT#9982", UEmail: "s011@edu.sg" },
+    { UID: "S012", URole: "student", UPassword: "Bn!Clb674", UEmail: "s012@edu.sg" },
   
     { UID: "A001", URole: "admin", Name: "Admin Quentin Lewis", UPassword: "Qu3nt1n@123", UEmail: "a001@edu.sg" },
     { UID: "A002", URole: "admin", Name: "Admin Rachel Turner", UPassword: "R@chel456", UEmail: "a002@edu.sg" },
