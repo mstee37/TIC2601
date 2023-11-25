@@ -52,7 +52,7 @@ router.route('/')
         console.log('DELETE: /course?CourseID=' + req.query.CourseID);
 
         var CourseID = req.query.CourseID;
-
+        //http://localhost:3001/course?CourseID=TIC2001
         models.Course.findByPk(CourseID).then((course) => {
             if (course === null) {
                 res.sendStatus(404);

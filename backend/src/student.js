@@ -33,10 +33,10 @@ router.route('/')
 
         var SID = req.body.SID;
         var SCourseID = req.body.SCourseID;
-        var SName = req.body.SName;
-        var SBatch = req.body.SBatch;
-        var SYear = req.body.SYear;
-        var SStatus = req.body.SStatus;
+        // var SName = req.body.SName;
+        // var SBatch = req.body.SBatch;
+        // var SYear = req.body.SYear;
+        // var SStatus = req.body.SStatus;
 
         models.Student.findByPk(SID).then((student) => {
             if (student === null) {
@@ -44,10 +44,10 @@ router.route('/')
             }
             else {
                 student.SCourseID = SCourseID;
-                student.SName = SName;
-                student.SBatch = SBatch;
-                student.SYear = SYear;
-                student.SStatus = SStatus;
+                // student.SName = SName;
+                // student.SBatch = SBatch;
+                // student.SYear = SYear;
+                // student.SStatus = SStatus;
 
                 student.save().then(() => {
                     res.sendStatus(200);

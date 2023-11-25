@@ -28,22 +28,22 @@ router.route('/')
             res.sendStatus(400);
         })
     })
-    .put((req, res) => { // to update useraccount
+    .put((req, res) => { // to update Upassword
         console.log('PUT: /user');
 
         var UID = req.body.UID;
-        var URole = req.body.URole;
+        //var URole = req.body.URole;
         var UPassword = req.body.UPassword;
-        var UEmail = req.body.UEmail;
+        //var UEmail = req.body.UEmail;
 
         models.UserAccount.findByPk(UID).then((user) => {
             if (user === null) {
                 res.sendStatus(404);
             }
             else {
-                user.URole = URole;
+                //user.URole = URole;
                 user.UPassword = UPassword;
-                user.UEmail = UEmail;
+                //user.UEmail = UEmail;
                 user.save().then(() => {
                     res.sendStatus(200);
                 })

@@ -9,21 +9,19 @@ const router = express.Router()
 router.route('/')
     .get((req, res) => { // to get class List
         console.log('GET: /class');
-        models.Class.findAll().then((classes) => {
+        models.Classes.findAll().then((classes) => {
             res.send(classes);
         })
     })
     .post((req, res) => { // to create class details
-        console.log('POST: /class');
+        console.log('POST: /Classes');
+        console.log(req.body)
         var CID = req.body.CID;
         var ModID = req.body.ModID;    
         var RoomNo = req.body.RoomNo;
         var StartDate = req.body.StartDate;
         var EndDate = req.body.EndDate;   
-        var StartTime = req.body.StartTime;
-        var EndTime = req.body.EndTime;        
-
-        models.Class.create({ CID: CID, RoomNo: RoomNo, StartDate:StartDate, EndDate: EndDate, StartTime:StartTime, EndTime:EndTime}).then(() => {
+        models.Classes.create({ CID: CID, RoomNo: RoomNo, ModID:ModID, StartDate: new Date(StartDate), EndDate: new Date(EndDate)}).then(() => {
             res.sendStatus(200);
         }).catch(() => {
             res.sendStatus(400);
@@ -32,15 +30,12 @@ router.route('/')
     .put((req, res) => { // to update classInfo
         console.log('PUT: /class');
 
-        var CID = req.body.CID;
-        var ModID = req.body.ModID;    
+        var CID = req.body.CID;  
         var RoomNo = req.body.RoomNo;
         var StartDate = req.body.StartDate;
-        var EndDate = req.body.EndDate;   
-        var StartTime = req.body.StartTime;
-        var EndTime = req.body.EndTime;      
+        var EndDate = req.body.EndDate; 
 
-        models.Class.findByPk(CID).then((classes) => {
+        models.Classes.findByPk(CID).then((classes) => {
             if (classes === null) {
                 res.sendStatus(404);
             }
@@ -48,8 +43,6 @@ router.route('/')
                 classes.RoomNo = RoomNo;
                 classes.StartDate = StartDate;
                 classes.EndDate = EndDate;
-                classes.StartTime = StartTime;
-                classes.EndTime = EndTime;
                 classes.save().then(() => {
                     res.sendStatus(200);
                 })
@@ -61,7 +54,7 @@ router.route('/')
 
         var CID = req.query.CID;
 
-        models.Class.findByPk(CID).then((classes) => {
+        models.Classes.findByPk(CID).then((classes) => {
             if (classes === null) {
                 res.sendStatus(404);
             }

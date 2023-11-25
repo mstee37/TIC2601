@@ -107,35 +107,35 @@ const Admin = sequelize.define('Admin', {
   
   
   
-  const Class = sequelize.define('Class', {
-      CID: {
-        type: DataTypes.STRING(10),
-        primaryKey: true,
-      },
-      ModID: {
-        type: DataTypes.STRING(10),
-        allowNull: false,
-      },
-      RoomNo: {
-        type: DataTypes.STRING(20),
-        allowNull: false,
-      },
-      StartDate: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-      },
-      EndDate: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-      },
-      StartTime: {
-        type: DataTypes.TIME,
-        allowNull: false,
-      },
-      EndTime: {
-        type: DataTypes.TIME,
-        allowNull: false,
-      },
+const Classes = sequelize.define('Classes', {
+    CID: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    ModID: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+    },
+    RoomNo: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    StartDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    EndDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    // StartTime: {
+    //   type: DataTypes.TIME,
+    //   allowNull: false,
+    // },
+    // EndTime: {
+    //   type: DataTypes.TIME,
+    //   allowNull: false,
+    // },
 }, {
     freezeTableName: true
 });
@@ -283,19 +283,20 @@ Module.hasMany(Transcript, {foreignKey: 'ModID'})
 Course.hasMany(Student, { foreignKey: 'SCourseID' });
   
 Professor.hasMany(Module, { foreignKey: 'ProfID' });
-Class.belongsTo(Module, { foreignKey: 'ModID' });
-  
+Classes.belongsTo(Module, { foreignKey: 'ModID' });
+
+
 ClassTaken.belongsTo(Student, { foreignKey: 'StuID' });
-ClassTaken.belongsTo(Class, { foreignKey: 'ClsID' });
+ClassTaken.belongsTo(Classes, { foreignKey: 'ClsID' });
 
 Module.belongsTo(Module, { foreignKey: 'MPreRequisite' });
 
 Student.hasMany(StudentAttendance, {foreignKey:'StuID'});
-Class.hasMany(StudentAttendance, {foreignKey:'ClsID'});
+Classes.hasMany(StudentAttendance, {foreignKey:'ClsID'});
 
 Notification.belongsTo(Course, { foreignKey: 'CourseID' });
 
 Module.belongsToMany(Course, { through: 'ModuleCourse', sourceKey: 'MID' });
 
 sequelize.sync();
-module.exports = {sequelize, Module,Course,Class,ClassTaken,Student,Admin,Professor,StudentAttendance,Notification,Transcript,UserAccount}
+module.exports = {sequelize, Module,Course,Classes,ClassTaken,Student,Admin,Professor,StudentAttendance,Notification,Transcript,UserAccount}
