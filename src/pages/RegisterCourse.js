@@ -12,7 +12,7 @@ function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNam
                 'courseName': courseNameToEdit, 
                 'studentName': studentNameToEdit
             }
-            axios.post('http://localhost:3001/course', newCourse)
+            axios.post('http://localhost:3001/registerCourse', newCourse)
                 .then(response => {
                     // Handle successful response
                     // Optionally, you can update the local state or re-fetch the courses
@@ -22,7 +22,7 @@ function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNam
         } else if (editMode === 'edit') {
             var course = courses.find(course => course.courseName === courseNameToEdit);
 
-            axios.put('http://localhost:3001/course', course)
+            axios.put('http://localhost:3001/registerCourse', course)
                 .then(response => {
                     // Handle successful response
                     course.courseName = courseNameToEdit;
@@ -76,7 +76,7 @@ function TableRowsCourses({ courses, setCourses, studentNameToEdit, setStudentNa
 
     function deleteCourse(event, courseName) {
 
-        axios.delete('http://localhost:3001/course')
+        axios.delete('http://localhost:3001/registerCourse')
             .then(response => {
                 // Handle successful response
                 // Update the local state to remove the deleted course

@@ -1,12 +1,12 @@
 <html>
 <head>
     <title>Course Registration</title>
-    <script type="text/javascript" src="scripts/course.js"></script>
+    <script type="text/javascript" src="scripts/registerCourse.js"></script>
 </head>
 <body>
     <h3>Register Course</h3>
-    <form id="courseForm" onsubmit="return ">
-        <table>
+    <form id="courseForm" onsubmit="return createUpdateCourse()">
+        <table border="1" width="100%">
             <tbody>
                 <tr>
                     <td width="20%"><b>Course Name</b></td>
@@ -29,7 +29,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <button type="button" onclick="processForm()">Register</button>
+                        <input type="submit" value="Register" />
                     </td>
                 </tr>
             </tbody>
@@ -39,7 +39,7 @@
     <hr>
 
     <h3>Registered Courses</h3>
-    <table id="coursesTable">
+    <table id="coursesTable" border="1" width="100%">
         <thead>
             <tr>
                 <th>Course Name</th>
@@ -52,14 +52,6 @@
         </tbody>
     </table>
 
-    <script>
-        // JavaScript code to handle form submission and table rendering
-        function processForm() {
-            // Implement form submission logic here
-            console.log('Form Submitted');
-        }
-
-        // Additional JavaScript to interact with the backend and update the UI
-    </script>
+   
 </body>
 </html>
