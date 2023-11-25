@@ -12,20 +12,20 @@ function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNam
                 'courseName': courseNameToEdit, 
                 'studentName': studentNameToEdit
             }
-            axios.put('http://localhost:3001/registerCourse', newCourse)
-                .then(response => {
+            // axios.put('http://localhost:3001/registerCourse', newCourse)
+            //     .then(response => {
                     setCourses(courses.concat([newCourse]));
-                })
+            //     })
             
         } else if (editMode === 'edit') {
             var course = courses.find(course => course.courseName === courseNameToEdit);
 
-            axios.post('http://localhost:3001/registerCourse', course)
-                .then(response => {
+            // axios.post('http://localhost:3001/registerCourse', course)
+            //     .then(response => {
                     course.courseName = courseNameToEdit;
                     course.studentName = studentNameToEdit;
                     setEditMode('create');
-                })
+            //     })
         }
 
         setStudentNameToEdit('');
@@ -73,12 +73,11 @@ function TableRowsCourses({ courses, setCourses, studentNameToEdit, setStudentNa
 
     function deleteCourse(event, courseName) {
 
-        axios.delete('http://localhost:3001/registerCourse')
-            .then(response => {
-                // Handle successful response
-                // Update the local state to remove the deleted course
+        // axios.delete('http://localhost:3001/registerCourse')
+        //     .then(response => {
+             
                 setCourses(courses.filter(course => course.courseName !== courseName));
-            })
+            // })
     }
 
     return (
