@@ -12,19 +12,16 @@ function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNam
                 'courseName': courseNameToEdit, 
                 'studentName': studentNameToEdit
             }
-            axios.post('http://localhost:3001/registerCourse', newCourse)
+            axios.put('http://localhost:3001/registerCourse', newCourse)
                 .then(response => {
-                    // Handle successful response
-                    // Optionally, you can update the local state or re-fetch the courses
                     setCourses(courses.concat([newCourse]));
                 })
             
         } else if (editMode === 'edit') {
             var course = courses.find(course => course.courseName === courseNameToEdit);
 
-            axios.put('http://localhost:3001/registerCourse', course)
+            axios.post('http://localhost:3001/registerCourse', course)
                 .then(response => {
-                    // Handle successful response
                     course.courseName = courseNameToEdit;
                     course.studentName = studentNameToEdit;
                     setEditMode('create');

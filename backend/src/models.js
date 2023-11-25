@@ -58,6 +58,22 @@ const Course = sequelize.define('Course', {
 }, {
     freezeTableName: true
 });
+
+const registerCourse = sequelize.define('registerCourse', {
+  
+  CourseName: {
+    type: DataTypes.STRING(200),
+    unique: true,
+  },
+  
+  StudentName: {
+    type: DataTypes.STRING(500),
+    allowNull: false,
+  },
+}, {
+freezeTableName: true
+});
+
   
 const Student = sequelize.define('Student', {
       SID: {
@@ -299,4 +315,8 @@ Notification.belongsTo(Course, { foreignKey: 'CourseID' });
 Module.belongsToMany(Course, { through: 'ModuleCourse', sourceKey: 'MID' });
 
 sequelize.sync();
+<<<<<<< Updated upstream
 module.exports = {sequelize, Module,Course,Classes,ClassTaken,Student,Admin,Professor,StudentAttendance,Notification,Transcript,UserAccount}
+=======
+module.exports = {sequelize, Module,Course,Classes,ClassTaken,Student,Admin,Professor,StudentAttendance,Notification,Transcript,UserAccount,registerCourse}
+>>>>>>> Stashed changes
