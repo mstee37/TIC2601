@@ -1,0 +1,57 @@
+<html>
+<head>
+    <title>Course Registration</title>
+    <script type="text/javascript" src="scripts/registerCourse.js"></script>
+</head>
+<body>
+    <h3>Register Course</h3>
+    <form id="courseForm" onsubmit="return createUpdateCourse()">
+        <table border="1" width="100%">
+            <tbody>
+                <tr>
+                    <td width="20%"><b>Course Name</b></td>
+                    <td>
+                        <select id="courseName" name="courseName">
+                            <!-- Options should be dynamically generated -->
+                            <option value="Business Analytics">Business Analytics</option>
+                            <option value="Software Engineering">Software Engineering</option>
+                            <option value="Business Administration">Business Administration</option>
+                            <option value="Economics">Economics</option>
+                            <option value="Banking & Finance">Banking & Finance</option>
+                            <option value="Cybersecurity">Cybersecurity</option>
+                            <!-- Add other course options here -->
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Student Name</b></td>
+                    <td><input type="text" id="studentName" name="studentName" placeholder="Enter student name"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="submit" value="Register" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <hr>
+
+    <h3>Registered Courses</h3>
+    <table id="coursesTable" border="1" width="100%">
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Student Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Course rows should be dynamically generated -->
+        </tbody>
+    </table>
+
+   
+</body>
+</html>

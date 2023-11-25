@@ -41,6 +41,9 @@ app.use('/studentAttendance', studentAttendance);
 const Transcript = require('./Transcript') ;
 app.use('/Transcript', Transcript);
 
+const registerCourseRouter = require('./registerCourse');
+app.use('/registerCourse', registerCourseRouter);
+
 app.listen(port, function () {
     console.log(`Express app listening on port ${port}!`);
 });

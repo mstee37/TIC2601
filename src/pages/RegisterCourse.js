@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import DropdownCourse from "../components/DropdownCourse";
 import InputStudentNameCourse from "../components/InputStudentNameCourse";
+import axios from 'axios';
 
 function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNameToEdit, courseNameToEdit, setCourseNameToEdit, editMode, setEditMode }) {
     function processForm() {
@@ -10,14 +11,24 @@ function InputFormCourse({ setCourses, courses, studentNameToEdit, setStudentNam
             var newCourse = { 
                 'courseName': courseNameToEdit, 
                 'studentName': studentNameToEdit
-            };
-            setCourses(courses.concat([newCourse]));
+            }
+            axios.post('http://localhost:3001/registerCourse', newCourse)
+                .then(response => {
+                    // Handle successful response
+                    // Optionally, you can update the local state or re-fetch the courses
+                    setCourses(courses.concat([newCourse]));
+                })
+            
         } else if (editMode === 'edit') {
             var course = courses.find(course => course.courseName === courseNameToEdit);
-            course.courseName = courseNameToEdit;
-            course.studentName = studentNameToEdit;
 
-            setEditMode('create');
+            axios.put('http://localhost:3001/registerCourse', course)
+                .then(response => {
+                    // Handle successful response
+                    course.courseName = courseNameToEdit;
+                    course.studentName = studentNameToEdit;
+                    setEditMode('create');
+                })
         }
 
         setStudentNameToEdit('');
@@ -64,7 +75,13 @@ function TableRowsCourses({ courses, setCourses, studentNameToEdit, setStudentNa
     }
 
     function deleteCourse(event, courseName) {
-        setCourses(courses.filter(course => course.courseName !== courseName));
+
+        axios.delete('http://localhost:3001/registerCourse')
+            .then(response => {
+                // Handle successful response
+                // Update the local state to remove the deleted course
+                setCourses(courses.filter(course => course.courseName !== courseName));
+            })
     }
 
     return (
@@ -109,34 +126,10 @@ export default function CourseRegistration() {
     const [courseNameToEdit, setCourseNameToEdit] = useState('Business Analytics');
     const [studentNameToEdit, setStudentNameToEdit] = useState('');
 
-    const handleSubmit = async () => {
-        try {
-            const response = await fetch('http://your-backend-api.com/api/courses', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ courses }),
-            });
-
-            if (response.ok) {
-                console.log('Courses submitted successfully');
-
-            } else {
-                console.error('Failed to submit courses');
-
-            }
-        } catch (error) {
-            console.error('Error submitting courses:', error);
-        
-        }
-    };
-
     return (
         <>
             <InputFormCourse setCourses={setCourses} courses={courses} studentNameToEdit={studentNameToEdit} setStudentNameToEdit={setStudentNameToEdit} courseNameToEdit={courseNameToEdit} setCourseNameToEdit={setCourseNameToEdit} editMode={editMode} setEditMode={setEditMode} />
             <TableCourses courses={courses} setCourses={setCourses} setStudentNameToEdit={setStudentNameToEdit} setCourseNameToEdit={setCourseNameToEdit} setEditMode={setEditMode} />
-            <button onClick={handleSubmit}>Confirm</button>
         </>
     );
 }
