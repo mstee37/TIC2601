@@ -1,32 +1,46 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react";
 import InputId from "../components/InputId";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-function InputFormCourse({editMode, setEditMode , course, setCourse, CourseIDToEdit, setCourseIDToEdit, CourseNameToEdit, setCourseNameToEdit, CourseTotalMCToEdit, setCourseTotalMCToEdit, CourseDescriptionToEdit, setCourseDescriptionToEdit}){
+import { CourseToEditContext } from '../contexts/CourseToEditContext';
+
+axios.defaults.headers.put['Content-Type'] = 'application/json';
+
+function InputFormCourse(){
     
-    function processForm(){
+    const{editMode, setEditMode , course, setCourse, CourseIDToEdit, setCourseIDToEdit, CourseNameToEdit, setCourseNameToEdit, CourseTotalMCToEdit, setCourseTotalMCToEdit, CourseDescriptionToEdit, setCourseDescriptionToEdit, reloadCourse, setReloadCourse} = useContext(CourseToEditContext);
 
-
-        if(editMode === 'create')
-        {
-            var newCourse = {'CourseID' : CourseIDToEdit, 'CourseName':CourseNameToEdit, 'CourseTotalMC' : CourseTotalMCToEdit, 'CourseDescription' : CourseDescriptionToEdit}
-            setCourse(course.concat([newCourse]));
-        }
-        else if(editMode === 'edit')
-        {
-            var courses = course.find(courses=>courses.CourseID === CourseIDToEdit)
-            courses.CourseID = CourseIDToEdit;
-            courses.CourseName = CourseNameToEdit;
-            courses.CourseTotalMC = CourseTotalMCToEdit;
-            courses.CourseDescription = CourseDescriptionToEdit;
-            
-            setEditMode('create');
-        }
-
+    function resetInputState(){
         setCourseIDToEdit('');
         setCourseNameToEdit('');
         setCourseTotalMCToEdit('');
         setCourseDescriptionToEdit('');
+    }
+
+    function processForm(){
+
+        if(editMode === 'create')
+        {
+            var newCourse = {'CourseID' : CourseIDToEdit, 'CourseName':CourseNameToEdit, 'CourseTotalMC' : CourseTotalMCToEdit, 'CourseDescription' : CourseDescriptionToEdit}
+            axios.put('http://localhost:3001/course', newCourse).then((response)=>{
+                resetInputState();
+                setReloadCourse(!reloadCourse)
+            })
+        }
+        else if(editMode === 'edit')
+        {
+            var courses = {'CourseID': CourseIDToEdit, 'CourseName': CourseNameToEdit, 'CourseTotalMC' : CourseTotalMCToEdit, 'CourseDescription' : CourseDescriptionToEdit}
+            axios.post('http://localhost:3001/course', courses).then((response=>{
+                resetInputState();
+                setReloadCourse(!reloadCourse);
+                setEditMode('create');
+            }))
+
+            
+        }
+
+        
     }
 
     return(
@@ -74,8 +88,18 @@ function InputFormCourse({editMode, setEditMode , course, setCourse, CourseIDToE
 }
 
 
-function TableRowCourse({editMode, setEditMode, course, setCourse, CourseIDToEdit, setCourseIDToEdit, CourseNameToEdit, setCourseNameToEdit, CourseTotalMCToEdit, setCourseTotalMCToEdit, CourseDescriptionToEdit, setCourseDescriptionToEdit})
+function TableRowCourse()
 {
+
+    const{editMode, setEditMode , course, setCourse, CourseIDToEdit, setCourseIDToEdit, CourseNameToEdit, setCourseNameToEdit, CourseTotalMCToEdit, setCourseTotalMCToEdit, CourseDescriptionToEdit, setCourseDescriptionToEdit, reloadCourse, setReloadCourse} = useContext(CourseToEditContext);
+    useEffect(
+        () => {
+            axios.get('http://localhost:3001/course').then((response) => {
+                setCourse(response.data);
+            })
+        }, [reloadCourse]
+    )
+
 
     function updateCourse(event, CourseID)
     {
@@ -90,9 +114,9 @@ function TableRowCourse({editMode, setEditMode, course, setCourse, CourseIDToEdi
 
     function deleteCourse(event, CourseID)
     {
-        setCourse(course.filter(courses =>
-            courses.CourseID !== CourseID
-            ))
+        axios.delete('http://localhost:3001/course',{params: {'CourseID' : CourseID}}).then((response) => {
+            setReloadCourse(!reloadCourse);
+        })
     }
 
     return(
@@ -113,7 +137,7 @@ function TableRowCourse({editMode, setEditMode, course, setCourse, CourseIDToEdi
     )
 }
 
-function TableCourse({editMode, setEditMode ,course, setCourse, CourseIDToEdit, setCourseIDToEdit, CourseNameToEdit, setCourseNameToEdit, CourseTotalMCToEdit, setCourseTotalMCToEdit, CourseDescriptionToEdit, setCourseDescriptionToEdit}){
+function TableCourse(){
 
     return(
         <>
@@ -129,8 +153,7 @@ function TableCourse({editMode, setEditMode ,course, setCourse, CourseIDToEdit, 
                     </tr>
                 </thead>
                 <tbody>
-                    <TableRowCourse editMode={editMode} setEditMode={setEditMode} course={course} setCourse={setCourse} CourseIDToEdit={CourseIDToEdit} setCourseIDToEdit={setCourseIDToEdit} CourseNameToEdit={CourseNameToEdit} setCourseNameToEdit={setCourseNameToEdit} CourseTotalMCToEdit={CourseTotalMCToEdit} 
-                setCourseTotalMCToEdit={setCourseTotalMCToEdit} CourseDescriptionToEdit={CourseDescriptionToEdit} setCourseDescriptionToEdit={setCourseDescriptionToEdit}/>
+                    <TableRowCourse/>
                 </tbody>
             </table>
         </>
@@ -152,8 +175,20 @@ export default function CourseCreation(){
     const [CourseTotalMCToEdit, setCourseTotalMCToEdit] = useState('');
     const [CourseDescriptionToEdit, setCourseDescriptionToEdit] = useState('');
 
+    const [reloadCourse, setReloadCourse] = useState(true)
+
     return(
         <>
+
+            <CourseToEditContext.Provider value={{
+                editMode, setEditMode ,
+                course, setCourse, 
+                CourseIDToEdit, setCourseIDToEdit, 
+                CourseNameToEdit, setCourseNameToEdit, 
+                CourseTotalMCToEdit, setCourseTotalMCToEdit, 
+                CourseDescriptionToEdit, setCourseDescriptionToEdit,
+                reloadCourse, setReloadCourse
+            }}>
             <div className="row" style={{ width: '100%' }}>
                 <div style={{ width: '100%', float: 'left' }}>
                     <h2 style={{ marginTop: '0px' }}>Course</h2>
@@ -161,16 +196,13 @@ export default function CourseCreation(){
             </div>
 
             <div className="row" style={{ width: '100%' }}>
-                <InputFormCourse editMode={editMode} setEditMode={setEditMode} course={course} setCourse={setCourse} CourseIDToEdit={CourseIDToEdit} setCourseIDToEdit={setCourseIDToEdit} CourseNameToEdit={CourseNameToEdit} setCourseNameToEdit={setCourseNameToEdit} CourseTotalMCToEdit={CourseTotalMCToEdit} 
-                setCourseTotalMCToEdit={setCourseTotalMCToEdit} CourseDescriptionToEdit={CourseDescriptionToEdit} setCourseDescriptionToEdit={setCourseDescriptionToEdit}
-                />
+                <InputFormCourse />
             </div>
 
             <div className="row" style={{ width: '100%' }}>
-                <TableCourse editMode={editMode} setEditMode={setEditMode} course={course} setCourse={setCourse} CourseIDToEdit={CourseIDToEdit} setCourseIDToEdit={setCourseIDToEdit} CourseNameToEdit={CourseNameToEdit} setCourseNameToEdit={setCourseNameToEdit} CourseTotalMCToEdit={CourseTotalMCToEdit} 
-                setCourseTotalMCToEdit={setCourseTotalMCToEdit} CourseDescriptionToEdit={CourseDescriptionToEdit} setCourseDescriptionToEdit={setCourseDescriptionToEdit} />
+                <TableCourse  />
             </div>
-
+        </CourseToEditContext.Provider>
 
 
         </>
