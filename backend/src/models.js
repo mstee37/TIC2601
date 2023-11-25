@@ -19,9 +19,15 @@ const UserAccount = sequelize.define('UserAccount', {
     URole: {
       type: DataTypes.STRING(10),
       allowNull: false,
+      validate: {
+        isIn: [['professor', 'student', 'admin']],
+      },
     },
     UPassword: {
       type: DataTypes.STRING(64),
+      validate: {
+        len: [8, Infinity],
+      },
     },
     UEmail: {
       type: DataTypes.STRING,
@@ -77,6 +83,9 @@ const Student = sequelize.define('Student', {
       SStatus: {
         type: DataTypes.CHAR(1),
         defaultValue: null,
+        validate: {
+          isIn: [['A', 'R']],
+        },
       },
 }, {
     freezeTableName: true
@@ -155,6 +164,9 @@ const Module = sequelize.define('Module', {
       MPreRequisite: {
         type: DataTypes.STRING(10),
       },
+      ProfID: {
+        type: DataTypes.STRING,
+      },
   }, {
       freezeTableName: true
   });
@@ -205,8 +217,11 @@ const StudentAttendance = sequelize.define('StudentAttendance', {
         primaryKey: true,
       },
       Attendance: {
-        type: DataTypes.CHAR(1),
+        type: DataTypes.STRING,
         defaultValue: null,
+        validate: {
+          isIn: [[null,'Y', 'N']],
+        },
       }
 }, {
       freezeTableName: true
@@ -223,6 +238,9 @@ const Transcript = sequelize.define('Transcript', {
       },
       Grade: {
         type: DataTypes.CHAR(2),
+        validate: {
+          isIn: [['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'D+', 'D', 'F']],
+        },
       },
       TYear: {
         type: DataTypes.INTEGER,
@@ -237,9 +255,10 @@ const Notification = sequelize.define('Notification', {
         type: DataTypes.STRING(20),
         primaryKey: true,
       },
-      // StuID: {
-      //   type: DataTypes.STRING(10),
-      // },
+      // push notification to each course 
+      CourseID: {
+        type: DataTypes.STRING(10),
+      },
       DateTime: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -274,7 +293,7 @@ Module.belongsTo(Module, { foreignKey: 'MPreRequisite' });
 Student.hasMany(StudentAttendance, {foreignKey:'StuID'});
 Class.hasMany(StudentAttendance, {foreignKey:'ClsID'});
 
-Notification.belongsToMany(Student, { through: 'StudentNotification', sourceKey: 'NotID' });
+Notification.belongsTo(Course, { foreignKey: 'CourseID' });
 
 Module.belongsToMany(Course, { through: 'ModuleCourse', sourceKey: 'MID' });
 
