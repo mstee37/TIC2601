@@ -236,7 +236,7 @@ const Transcript = sequelize.define('Transcript', {
         },
       },
       TYear: {
-        type: DataTypes.DATE,
+        type: DataTypes.INTEGER,
       },
 }, {
       freezeTableName: true
@@ -285,10 +285,9 @@ Module.belongsTo(Module, { foreignKey: 'MPreRequisite', as:'preMod' });
 Student.hasMany(StudentAttendance, {foreignKey:'StuID'});
 Classes.hasMany(StudentAttendance, {foreignKey:'ClsID'});
 
+
 StudentAttendance.belongsTo(Classes,{foreignKey:'ClsID'})
 StudentAttendance.belongsTo(Student,{foreignKey:'StuID'})
-
-
 
 Notification.belongsTo(Course, { foreignKey: 'CourseID' });
 
@@ -322,9 +321,21 @@ ClassTaken.afterCreate(async (classTakenInstance) => {
           Attendance: null,
         });
     }
-  } catch (error) {
+    if (endDate<= new Date()) {
+      await Transcript.create({
+          StuID,
+          ModID: classInstance.ModID,
+          Grade: null,
+          TYear: endDate.getFullYear(),
+        });
+
+      }
+    }
+   catch (error) {
     console.error(`Error in afterCreate hook: ${error.message}`);
   }
+    
+
 });
 
 sequelize.sync();
