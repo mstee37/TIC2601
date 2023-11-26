@@ -10,20 +10,41 @@ router.route('/')
     .get((req, res) => { // to get transcript List
         console.log('GET: /transcript?ProfID=' + req.query.ProfID);
             var ProfIDs = req.query.ProfID;  
-            models.Transcript.findAll({
-                include: {
-                model: models.Module,
-                where: { ProfID: ProfIDs },
-                attributes:[]
-                }
-                
-            }).then((modulesgrades) => {
-                if (modulesgrades === null) {
-                    res.sendStatus(404);
-                } else {
-                    res.send(modulesgrades);
-                }
-            })
+            if (req.query.ModID) {
+                console.log('GET:/transcript?ProfID=&ModID=' + req.query.ProfID + req.query.ModID);
+                var ModIDs=req.query.ModID;
+                models.Classes.findAll({
+                    include: {
+                    model: models.Module,
+                    where: { MID:ModIDs,ProfID: ProfIDs},
+                    attributes:[]
+                    }
+                }).then((classes) => {
+                    console.log('Fetched classes:', classes);
+                    if (classes === null) {
+                        res.sendStatus(404);
+                    } else {
+                        res.send(classes);
+                    }
+                    
+                })
+
+            }else{
+                models.Transcript.findAll({
+                    include: {
+                    model: models.Module,
+                    where: { ProfID: ProfIDs },
+                    attributes:[]
+                    }
+                    
+                }).then((modulesgrades) => {
+                    if (modulesgrades === null) {
+                        res.sendStatus(404);
+                    } else {
+                        res.send(modulesgrades);
+                    }
+                })
+            }
     })
     .post((req, res) => { //update
         console.log('POST: /transcript?ProfID=' + req.query.ProfID);
