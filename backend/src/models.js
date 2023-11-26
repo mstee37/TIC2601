@@ -197,7 +197,8 @@ const ClassTaken = sequelize.define('ClassTaken', {
       },
       Feedback: {
         type: DataTypes.STRING(500),
-        // defaultValue: null,
+        defaultValue: null,
+        allowNull: true
       }
 }, {
       freezeTableName: true
