@@ -244,8 +244,7 @@ const Transcript = sequelize.define('Transcript', {
         },
       },
       TYear: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        type: DataTypes.DATE,
       },
 }, {
       freezeTableName: true

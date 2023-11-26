@@ -18,9 +18,10 @@ router.route('/')
         var StuID = req.body.StuID;
         var ModID = req.body.ModID;
         var Grade = req.body.Grade;
-        var TYear = req.body.TYear;        
+        //var TYear = new Date().getFullYear();  
 
-        models.Transcript.create({ StuID: StuID, ModID: ModID, Grade:Grade, TYear: TYear}).then(() => {
+        }).then(() => {
+        models.Transcript.create({ StuID: StuID, ModID: ModID, Grade:Grade}).then(() => {
             res.sendStatus(200);
         }).catch(() => {
             res.sendStatus(400);

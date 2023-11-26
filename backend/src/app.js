@@ -32,14 +32,14 @@ app.use('/modules', modules);
 const notification = require('./notification') ;
 app.use('/notification', notification);
 
-const Professor = require('./Professor') ;
-app.use('/Professor', Professor);
+const Professor = require('./professor') ;
+app.use('/professor', Professor);
 
 const studentAttendance = require('./studentAttendance') ;
 app.use('/studentAttendance', studentAttendance);
 
-const Transcript = require('./Transcript') ;
-app.use('/Transcript', Transcript);
+const Transcript = require('./transcript') ;
+app.use('/transcript', Transcript);
 
 const registerCourse = require('./registerCourse');
 app.use('/registerCourse', registerCourse);
