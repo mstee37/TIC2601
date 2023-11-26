@@ -9,7 +9,6 @@ export default function MarkAttendance() {
     const [students, setStudents] = useState([
         { studentId: 'S001', name: 'John', attendance: 'N' },
         { studentId: 'S002', name: 'Jane', attendance: 'N' },
-        // ... other students
     ]);
 
     const handleAttendanceChange = (studentId, attendance) => {

@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import InputId from "../components/InputStudentID";
+import axios from 'axios';
 
 export default function Transcript() {
     const [studentId, setStudentId] = useState('');
     const [transcripts, setTranscripts] = useState([]);
 
-    useEffect(() => {
-        if (studentId) {
-            fetch(`API_ENDPOINT/transcripts?studentId=${studentId}`)
-                .then(response => response.json())
-                .then(data => setTranscripts(data))
-                .catch(error => console.error('Error fetching transcripts:', error));
-        }
-    }, [studentId]);
+    // useEffect(
+    //     () => {
+    //     if (studentId) {
+    //         axios.get(`http://localhost:3001/Transcripts?StuID=${studentId}`).then((response) => {
+    //             setTranscripts(response.data);
+    //         })}
+    //     }, [studentId]
+    // )
 
     return (
         <div>

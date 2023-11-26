@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import InputId from "../components/InputId";
+import axios from 'axios';
 
 export default function SendFeedback() {
     const [classId, setClassId] = useState('');
@@ -10,9 +11,18 @@ export default function SendFeedback() {
     }
 
     function submitFeedback() {
-        console.log("Sent feedback for class ID:", classId, "with the feedback:", feedback);
-        setClassId('');
-        setFeedback('');
+
+        const feedbackData = {
+            classId,
+            feedback
+        };
+
+        // axios.post('http://localhost:3001/feedback', feedbackData)
+            // .then(response => {
+                console.log("Sent feedback for class ID:", classId, "with the feedback:", feedback);
+                setClassId('');
+                setFeedback('');
+            // })
     }
 
     return (

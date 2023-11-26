@@ -35,7 +35,6 @@ router.route('/')
         models.registerCourse.findOne({ where: { CourseName, StudentName } })
             .then((registration) => {
                 if (registration) {
-                    // Update logic here if needed
                     res.sendStatus(200);
                 } else {
                     res.sendStatus(404);
