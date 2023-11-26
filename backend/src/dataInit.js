@@ -1,13 +1,12 @@
-
 const models = require('./models');
 
 
-const bulkCreate = async (model, data) => {
+const bulkCreate = async (model, data, options = {}) => {
     try {
-      const result = await model.bulkCreate(data, { validate: true });
-      console.log(`Bulk creation successful for ${model.name}:`, result);
+      const result = await model.bulkCreate(data, { validate: true ,...options});
+    //   console.log(`Bulk creation successful for ${model.name}:`, result);
     } catch (error) {
-      console.error(`Error in bulk creation for ${model.name}:`, error);
+    //   console.error(`Error in bulk creation for ${model.name}:`, error);
     }
   };
 
@@ -94,11 +93,15 @@ const userData = [
   ];
   
   const classData = [
-    { CID: 'C001', ModID: 'M001', RoomNo: 'COM1-B1-1002', StartDate: '2023-08-02', EndDate: '2023-11-01', StartTime: '18:30:00', EndTime: '21:30:00' },
-    { CID: 'C002', ModID: 'M002', RoomNo: 'COM1-B2-1005', StartDate: '2023-01-02', EndDate: '2023-05-02', StartTime: '18:30:00', EndTime: '21:30:00' },
-    { CID: 'C003', ModID: 'M003', RoomNo: 'COM2-B2-2103', StartDate: '2023-08-03', EndDate: '2023-11-03', StartTime: '18:30:00', EndTime: '21:30:00' },
-    { CID: 'C004', ModID: 'M004', RoomNo: 'COM2-B1-1023', StartDate: '2023-01-03', EndDate: '2023-05-03', StartTime: '19:00:00', EndTime: '20:30:00' },
-    { CID: 'C005', ModID: 'M005', RoomNo: 'COM1-B1-2018', StartDate: '2023-08-04', EndDate: '2023-11-04', StartTime: '18:00:00', EndTime: '21:00:00' }
+    { CID: 'C001', ModID: 'M001', RoomNo: 'COM1-B1-1002', StartDate: new Date('2023-08-02T18:30:00'), EndDate: new Date('2023-11-01T21:30:00') },
+    { CID: 'C002', ModID: 'M002', RoomNo: 'COM1-B2-1005', StartDate: new Date('2023-01-02T18:30:00'), EndDate: new Date('2023-05-02T21:30:00')},
+    // , StartTime: '18:30:00', EndTime: '21:30:00' },
+    { CID: 'C003', ModID: 'M003', RoomNo: 'COM2-B2-2103', StartDate: new Date('2023-08-03T18:30:00'), EndDate: new Date('2023-11-03T21:30:00')},
+    // , StartTime: '18:30:00', EndTime: '21:30:00' },
+    { CID: 'C004', ModID: 'M004', RoomNo: 'COM2-B1-1023', StartDate: new Date('2023-01-03T19:00:00'), EndDate: new Date('2023-05-03T20:30:00')},
+    // , StartTime: '19:00:00', EndTime: '20:30:00' },
+    { CID: 'C005', ModID: 'M005', RoomNo: 'COM1-B1-2018', StartDate: new Date('2023-08-04T18:00:00'), EndDate: new Date('2023-11-04T21:00:00')},
+    // , StartTime: '18:00:00', EndTime: '21:00:00' }
 
   ];
   
@@ -147,14 +150,25 @@ models.sequelize.sync({ force: true })
     await Promise.all([
       bulkCreate(models.Module, moduleData)
     ]);
-    await bulkCreate(models.Class, classData);
+    await bulkCreate(models.Classes, classData);
     await bulkCreate(models.ModuleCourse, moduleCourseData);
 
-    await bulkCreate(models.ClassTaken, classTakenData);
+    await bulkCreate(models.ClassTaken, classTakenData, { individualHooks: true });
 
-    // Close the connection
-    await models.sequelize.close();
+
+
+
+        console.log('Data Loaded.');
+
+
+    // await models.sequelize.close();
+
+
+
   })
   .catch(error => {
     console.error('Unable to create tables:', error);
   });
+
+
+
