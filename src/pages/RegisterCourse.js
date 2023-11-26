@@ -27,6 +27,9 @@ function InputFormCourse() {
 
             axios.post('http://localhost:3001/student', courseData)
                 .then((response) => {
+
+                    // setCourses(courses.concat([courseData]));
+
                     setReloadCourses(!reloadCourses);
                 })
                 .catch(error => {
@@ -38,6 +41,10 @@ function InputFormCourse() {
 
             axios.put('http://localhost:3001/student', courseData)
                 .then((response) => {
+
+                    // var course = courses.find(course => course.SID === SIDToEdit);
+                    // course.SCourseID = courseData.SCourseID;
+
                     setReloadCourses(!reloadCourses);
                     setEditMode('create');
                 })
