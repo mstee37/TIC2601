@@ -6,6 +6,24 @@ import { useContext } from "react";
 function CheckUser(){
 
     const {user, setUser} = useContext(UserContext);
+    const navigate = useNavigate();
+    var role = user.charAt(0);
+
+    function navigateRolePage()
+    {
+        if(role === 'A')
+        {
+            navigate('/MainPageAdmin');
+        }
+        else if(role === 'P')
+        {
+            navigate('/MainPageProf');
+        }
+        else if(role === 'S')
+        {
+            navigate('/MainPageStudent');
+        }
+    }
 
     if(user !== '')
     {
@@ -13,12 +31,11 @@ function CheckUser(){
             <>
                 <div>
                     <h1>Welcome back, {user}</h1>
+                    <input type={'button'} value='Home' onClick={navigateRolePage} ></input>
                 </div>
             </>
         )
     }
-
-    
 }
 
 
@@ -44,7 +61,6 @@ export default function Layout() {
             
             
             <hr />
-
             <input type={'button'} value='Logout' onClick={logout}/>
             <Link to='/Index'>Stuck</Link>
         </>
