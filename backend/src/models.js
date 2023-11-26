@@ -74,7 +74,7 @@ const Student = sequelize.define('Student', {
       },
       SBatch: {
         type: DataTypes.STRING(10),
-        allowNull: false,
+        defaultValue: null,
       },
       SYear: {
         type: DataTypes.INTEGER,
@@ -107,35 +107,35 @@ const Admin = sequelize.define('Admin', {
   
   
   
-const Classes = sequelize.define('Classes', {
-    CID: {
-      type: DataTypes.STRING,
-      primaryKey: true
-    },
-    ModID: {
-      type: DataTypes.STRING(10),
-      allowNull: false,
-    },
-    RoomNo: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    StartDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    EndDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    // StartTime: {
-    //   type: DataTypes.TIME,
-    //   allowNull: false,
-    // },
-    // EndTime: {
-    //   type: DataTypes.TIME,
-    //   allowNull: false,
-    // },
+  const Class = sequelize.define('Class', {
+      CID: {
+        type: DataTypes.STRING(10),
+        primaryKey: true,
+      },
+      ModID: {
+        type: DataTypes.STRING(10),
+        allowNull: false,
+      },
+      RoomNo: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+      },
+      StartDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
+      EndDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
+      StartTime: {
+        type: DataTypes.TIME,
+        allowNull: false,
+      },
+      EndTime: {
+        type: DataTypes.TIME,
+        allowNull: false,
+      },
 }, {
     freezeTableName: true
 });
@@ -162,7 +162,7 @@ const Module = sequelize.define('Module', {
         },
       },
       MPreRequisite: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING(10),allowNull:true
       },
       ProfID: {
         type: DataTypes.STRING,
@@ -260,10 +260,10 @@ const Notification = sequelize.define('Notification', {
       CourseID: {
         type: DataTypes.STRING(10),
       },
-      // DateTime: {
-      //   type: DataTypes.DATE,
-      //   allowNull: false,
-      // },
+      DateTime: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
       Message: {
         type: DataTypes.STRING(500),
         allowNull: false,
@@ -284,20 +284,24 @@ Module.hasMany(Transcript, {foreignKey: 'ModID'})
 Course.hasMany(Student, { foreignKey: 'SCourseID' });
   
 Professor.hasMany(Module, { foreignKey: 'ProfID' });
-Classes.belongsTo(Module, { foreignKey: 'ModID' });
-
-
+Class.belongsTo(Module, { foreignKey: 'ModID' });
+  
 ClassTaken.belongsTo(Student, { foreignKey: 'StuID' });
-ClassTaken.belongsTo(Classes, { foreignKey: 'ClsID' });
+ClassTaken.belongsTo(Class, { foreignKey: 'ClsID' });
 
-Module.belongsTo(Module, { foreignKey: 'MPreRequisite' });
+Module.belongsTo(Module, { foreignKey: 'MPreRequisite', as:'preMod' });
 
 Student.hasMany(StudentAttendance, {foreignKey:'StuID'});
-Classes.hasMany(StudentAttendance, {foreignKey:'ClsID'});
+Class.hasMany(StudentAttendance, {foreignKey:'ClsID'});
 
 Notification.belongsTo(Course, { foreignKey: 'CourseID' });
 
-Module.belongsToMany(Course, { through: 'ModuleCourse', sourceKey: 'MID' });
+const ModuleCourse = sequelize.define('ModuleCourse', {}, {
+  freezeTableName: true
+});
+
+Module.belongsToMany(Course, { through: ModuleCourse, sourceKey: 'MID' });
+
 
 sequelize.sync();
-module.exports = {sequelize, Module,Course,Classes,ClassTaken,Student,Admin,Professor,StudentAttendance,Notification,Transcript,UserAccount}
+module.exports = {sequelize, Module,Course,Class,ClassTaken,Student,Admin,Professor,StudentAttendance,Notification,Transcript,UserAccount,ModuleCourse}

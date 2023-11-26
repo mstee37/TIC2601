@@ -10,9 +10,23 @@ const router = express.Router()
 
 router.route('/')
     .get((req, res) => { // to get useraccount List
-        console.log('GET: /user');
-        models.UserAccount.findAll().then((users) => {
-            res.send(users);
+        // console.log('GET: /user');
+        // models.UserAccount.findAll().then((users) => {
+        //     res.send(users);
+        // })
+
+        console.log('GET: /user?UID='+req.query.UID);
+        console.log(req.query.UID);
+
+        var UIDs = req.query.UID;
+
+        models.UserAccount.findByPk(UIDs).then((users)=> {
+            if (users === null) {
+                res.sendStatus(404);
+            }
+            else {
+                res.send(users);
+            }
         })
     })
     .post((req, res) => { // to create useraccount

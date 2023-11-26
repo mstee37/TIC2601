@@ -3,7 +3,7 @@ const cors = require('cors')
 const app = express();
 const port = 3001;
 
-//const dataInit = require('./dataInit');
+const dataInit = require('./dataInit');
 
 app.use(cors())
 app.use(express.json())
@@ -41,8 +41,8 @@ app.use('/studentAttendance', studentAttendance);
 const Transcript = require('./Transcript') ;
 app.use('/Transcript', Transcript);
 
-const registerCourseRouter = require('./registerCourse');
-app.use('/registerCourse', registerCourseRouter);
+const registerCourse = require('./registerCourse');
+app.use('/registerCourse', registerCourse);
 
 app.listen(port, function () {
     console.log(`Express app listening on port ${port}!`);

@@ -3,51 +3,43 @@ import InputId from "../components/InputStudentID";
 
 export default function Transcript() {
     const [studentId, setStudentId] = useState('');
-    const [grades, setGrades] = useState([]);
+    const [transcripts, setTranscripts] = useState([]);
 
     useEffect(() => {
         if (studentId) {
-            fetch(`API_ENDPOINT/grades?studentId=${studentId}`)
+            fetch(`API_ENDPOINT/transcripts?studentId=${studentId}`)
                 .then(response => response.json())
-                .then(data => setGrades(data.filter(grade => grade.value !== null)))
-                .catch(error => console.error('Error fetching grades:', error));
+                .then(data => setTranscripts(data))
+                .catch(error => console.error('Error fetching transcripts:', error));
         }
     }, [studentId]);
 
-    const calculateGPA = () => {
-        const totalGradePoints = grades.reduce((acc, grade) => acc + (grade.value * grade.creditUnits), 0);
-        const totalCredits = grades.reduce((acc, grade) => acc + grade.creditUnits, 0);
-
-        return totalCredits !== 0 ? (totalGradePoints / totalCredits).toFixed(2) : 'N/A';
-    };
-
     return (
         <div>
-            <h1>Student Grades</h1>
+            <h1>Student Transcript</h1>
             <div>
                 <InputId label='Student ID' value={studentId} setValue={setStudentId} />
             </div>
-            <table>
+            <table border={'1'} style={{ width: '100%', position: "relative" }}>
                 <thead>
                     <tr>
-                        <th>Course</th>
+                        <th>StuID</th>
+                        <th>ModID</th>
                         <th>Grade</th>
-                        <th>Credit Units</th>
+                        <th>TYear</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {grades.map((grade, index) => (
+                    {transcripts.map((transcript, index) => (
                         <tr key={index}>
-                            <td>{grade.course}</td>
-                            <td>{grade.value}</td>
-                            <td>{grade.creditUnits}</td>
+                            <td>{transcript.StuID}</td>
+                            <td>{transcript.ModID}</td>
+                            <td>{transcript.Grade}</td>
+                            <td>{transcript.TYear}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div>
-                <strong>GPA: </strong> {calculateGPA()}
-            </div>
         </div>
     );
 }
