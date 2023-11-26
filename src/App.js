@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {useState} from "react"
+import { UserContext } from "./contexts/UserContext";
 
 import Layout from "./pages/Layout";
 import Index from "./pages/Index";
@@ -20,7 +21,8 @@ import CourseCreation from "./pages/CourseCreation";
 import Transcript from "./pages/Transcript";
 import LoginPage from "./pages/LoginPage";
 import Login from "./pages/Login";
-import { UserContext } from "./contexts/UserContext";
+import Grading from "./pages/Grading";
+import Enrollment from "./pages/Enrollment";
 
 function App() {
   //<Route path="Index" element={<Index />} />
@@ -50,6 +52,8 @@ function App() {
           <Route path="MarkAttendance" element={<MarkAttendance/>}/>
           <Route path="CourseCreation" element={<CourseCreation/>}/>
           <Route path="Transcript" element={<Transcript/>}/>
+          <Route path="Grading" element={<Grading />} />
+          <Route path="Enrollment" element={<Enrollment />} />
           <Route path="*" element={<Error />} />
 
         </Route>
