@@ -39,7 +39,7 @@ router.route('/')
             raw: true,
           })
           .then((classlist) => {
-            console.log('Classlist:', classlist);
+            // console.log('Classlist:', classlist);
             if (classlist === null) {
                 res.sendStatus(404);
             } else {
