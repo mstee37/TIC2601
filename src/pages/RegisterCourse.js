@@ -1,37 +1,45 @@
-import React, { useState } from 'react';
-import DropdownCourse from "../components/DropdownCourse";
-import InputId from "../components/InputStudentID";
+import React, { useEffect, useState, useContext } from 'react';
+import InputId from "../components/InputId";
 import axios from 'axios';
 
-function InputFormCourse({ setCourses, courses, studentIdToEdit, setStudentIdToEdit, courseNameToEdit, setCourseNameToEdit, editMode, setEditMode }) {
+import { CourseToEditContext } from '../contexts/CourseToEditContext';
+
+axios.defaults.headers.put['Content-Type'] = 'application/json';
+
+function InputFormCourse() {
+    
+    const {
+        setCourses, courses, SIDToEdit, setSIDToEdit, SCourseIDToEdit, setSCourseIDToEdit, editMode, setEditMode, reloadCourses, setReloadCourses
+    } = useContext(CourseToEditContext);
+
     function processForm() {
-        console.log('InputFormCourse: processForm');
+
+        const courseData = { SID: SIDToEdit , SCourseID: SCourseIDToEdit,};
 
         if (editMode === 'create') {
-            var newCourse = { 
-                'courseName': courseNameToEdit, 
-                'studentId': studentIdToEdit
-            };
-            
-            // axios.put('http://localhost:3001/registerCourse', newCourse).then((response)=>{
-               
-                setCourses(courses.concat([newCourse]));
-            // })
-           
-        } else if (editMode === 'edit') {
-            var course = courses.find(course => course.courseName === courseNameToEdit);
+            axios.put('http://localhost:3001/student', courseData)
+                .then((response) => {
+                    setReloadCourses(!reloadCourses);
+                })
+                .catch(error => {
+                    console.error('Error in POST request:', error);
+                });
 
-            // axios.post('http://localhost:3001/registerCourse', course).then((response=>{
-                course.courseName = courseNameToEdit;
-                course.studentId = studentIdToEdit;
-                setEditMode('create');
-            // }))
-           
+        } else if (editMode === 'edit') {
+            axios.post(`http://localhost:3001/student/${SIDToEdit}`, courseData)
+                .then((response) => {
+                    setReloadCourses(!reloadCourses);
+                    setEditMode('create');
+                })
+                .catch(error => {
+                    console.error('Error in PUT request:', error);
+                });
         }
 
-        setStudentIdToEdit('');
-        setCourseNameToEdit('Business Analytics');
+        setSIDToEdit('');
+        setSCourseIDToEdit('');
     }
+    
 
     return (
         <>
@@ -39,15 +47,15 @@ function InputFormCourse({ setCourses, courses, studentIdToEdit, setStudentIdToE
             <table border={'1'} style={{ width: '100%', position: "relative" }}>
                 <tbody>
                     <tr>
-                        <td width={'20%'}><b>Course Name</b></td>
+                        <td width={'20%'}><b>Course ID</b></td>
                         <td>
-                            <DropdownCourse value={courseNameToEdit} setValue={setCourseNameToEdit} />
+                            <InputId label='Course ID' value={SCourseIDToEdit} setValue={setSCourseIDToEdit} />
                         </td>
                     </tr>
                     <tr>
                         <td><b>Student ID</b></td>
                         <td>
-                            <InputId label='Student ID' value={studentIdToEdit} setValue={setStudentIdToEdit} />
+                            <InputId label='Student ID' value={SIDToEdit} setValue={setSIDToEdit} />
                         </td>
                     </tr>
                     <tr>
@@ -61,31 +69,42 @@ function InputFormCourse({ setCourses, courses, studentIdToEdit, setStudentIdToE
     );
 }
 
-function TableRowsCourses({ courses, setCourses, setStudentIdToEdit, setCourseNameToEdit, setEditMode }) {
-    function updateCourse(event, courseName) {
-        setEditMode('edit');
-        console.log('Editing ' + courseName);
+function TableRowsCourses() {
+    
+    const {
+        setCourses, courses, SIDToEdit, setSIDToEdit, SCourseIDToEdit, setSCourseIDToEdit, editMode, setEditMode, reloadCourses, setReloadCourses
+    } = useContext(CourseToEditContext);
 
-        var course = courses.find(course => course.courseName === courseName);
-        setCourseNameToEdit(course.courseName);
-        setStudentIdToEdit(course.studentId);
+    function updateCourse(event, SID) {
+        setEditMode('edit');
+        console.log('Editing ' + SID);
+
+        var course = courses.find(course => course.SID === SID);
+        setSCourseIDToEdit(course.SCourseID);
+        setSIDToEdit(course.SID);
     }
 
-    function deleteCourse(event, courseName) {
-        // axios.delete('http://localhost:3001/registerCourse',{params: {'courseName' : courseName}}).then((response) => {
-            setCourses(courses.filter(course => course.courseName !== courseName));
-        // })
+    useEffect(() => {
+        axios.get('http://localhost:3001/student').then(response => {
+            setCourses(response.data);
+        });
+    }, [reloadCourses]);
+
+    function deleteCourse(event, SID) {
+        axios.delete('http://localhost:3001/student',{params: {'SID' : SID}}).then((response) => {
+            setCourses(courses.filter(course => course.SID !== SID));
+        })
     }
 
     return (
         <>
             {courses.map(course => (
-                <tr key={course.courseName}>
-                    <td>{course.courseName}</td>
-                    <td>{course.studentId}</td>
+                <tr key={course.SCourseID}>
+                    <td>{course.SCourseID}</td>
+                    <td>{course.SID}</td>
                     <td>
-                        <button onClick={event => updateCourse(event, course.courseName)}>Update</button> |
-                        <button onClick={event => deleteCourse(event, course.courseName)}>Delete</button>
+                        <button onClick={event => updateCourse(event, course.SID)}>Update</button> |
+                        <button onClick={event => deleteCourse(event, course.SID)}>Delete</button>
                     </td>
                 </tr>
             ))}
@@ -93,14 +112,19 @@ function TableRowsCourses({ courses, setCourses, setStudentIdToEdit, setCourseNa
     );
 }
 
-function TableCourses({ courses, setCourses, setStudentIdToEdit, setCourseNameToEdit, setEditMode }) {
+function TableCourses() {
+    
+    const {
+        setCourses, courses, SIDToEdit, setSIDToEdit, SCourseIDToEdit, setSCourseIDToEdit, editMode, setEditMode, reloadCourses, setReloadCourses
+    } = useContext(CourseToEditContext);
+
     return (
         <>
             <h3>Registered Courses</h3>
             <table id={'coursesTable'} border={'1'} width={'100%'}>
                 <thead>
                     <tr>
-                        <th>Course Name</th>
+                        <th>Course ID</th>
                         <th>Student ID</th>
                         <th>Actions</th>
                     </tr>
@@ -109,8 +133,8 @@ function TableCourses({ courses, setCourses, setStudentIdToEdit, setCourseNameTo
                     <TableRowsCourses 
                         courses={courses} 
                         setCourses={setCourses} 
-                        setStudentIdToEdit={setStudentIdToEdit} 
-                        setCourseNameToEdit={setCourseNameToEdit} 
+                        setStudentIdToEdit={setSIDToEdit} 
+                        setCourseIdToEdit={setSCourseIDToEdit} 
                         setEditMode={setEditMode} />
                 </tbody>
             </table>
@@ -121,26 +145,20 @@ function TableCourses({ courses, setCourses, setStudentIdToEdit, setCourseNameTo
 export default function CourseRegistration() {
     const [courses, setCourses] = useState([]);
     const [editMode, setEditMode] = useState('create');
-    const [courseNameToEdit, setCourseNameToEdit] = useState('Business Analytics');
-    const [studentIdToEdit, setStudentIdToEdit] = useState('');
+    const [SCourseIDToEdit, setSCourseIDToEdit] = useState('');
+    const [SIDToEdit, setSIDToEdit] = useState('');
+    const [reloadCourses, setReloadCourses] = useState(false);
 
     return (
-        <>
-            <InputFormCourse 
-                setCourses={setCourses} 
-                courses={courses} 
-                studentIdToEdit={studentIdToEdit} 
-                setStudentIdToEdit={setStudentIdToEdit} 
-                courseNameToEdit={courseNameToEdit} 
-                setCourseNameToEdit={setCourseNameToEdit} 
-                editMode={editMode} 
-                setEditMode={setEditMode} />
-            <TableCourses 
-                courses={courses} 
-                setCourses={setCourses} 
-                setStudentIdToEdit={setStudentIdToEdit} 
-                setCourseNameToEdit={setCourseNameToEdit} 
-                setEditMode={setEditMode} />
-        </>
+        <CourseToEditContext.Provider value={{
+            editMode, setEditMode,
+            courses, setCourses,
+            SCourseIDToEdit, setSCourseIDToEdit,
+            SIDToEdit, setSIDToEdit,
+            reloadCourses, setReloadCourses
+        }}>
+            <InputFormCourse />
+            <TableCourses />
+        </CourseToEditContext.Provider>
     );
 }

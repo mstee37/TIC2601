@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import InputId from "../components/InputId";
+import { UserContext } from "../contexts/UserContext";
+import { useContext } from "react";
 import axios from 'axios';
 
 export default function SendFeedback() {
@@ -17,7 +19,7 @@ export default function SendFeedback() {
             feedback
         };
 
-        // axios.post('http://localhost:3001/feedback', feedbackData)
+        // axios.put('http://localhost:3001/classTaken', feedbackData)
             // .then(response => {
                 console.log("Sent feedback for class ID:", classId, "with the feedback:", feedback);
                 setClassId('');

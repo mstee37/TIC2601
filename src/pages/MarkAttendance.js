@@ -3,6 +3,8 @@ import axios from 'axios';
 import InputId from "../components/InputId";
 import InputDate from "../components/InputDate";
 
+// stuid, modid, grade, tyear
+
 export default function MarkAttendance() {
     const [classId, setClassId] = useState('');
     const [classDate, setClassDate] = useState('');

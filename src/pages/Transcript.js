@@ -6,14 +6,14 @@ export default function Transcript() {
     const [studentId, setStudentId] = useState('');
     const [transcripts, setTranscripts] = useState([]);
 
-    // useEffect(
-    //     () => {
-    //     if (studentId) {
-    //         axios.get(`http://localhost:3001/Transcripts?StuID=${studentId}`).then((response) => {
-    //             setTranscripts(response.data);
-    //         })}
-    //     }, [studentId]
-    // )
+    useEffect(
+        () => {
+        if (studentId) {
+            axios.get(`http://localhost:3001/Transcripts?StuID=${studentId}`).then((response) => {
+                setTranscripts(response.data);
+            })}
+        }, [studentId]
+    )
 
     return (
         <div>
