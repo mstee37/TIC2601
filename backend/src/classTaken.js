@@ -20,7 +20,7 @@ router.route('/')
             if (classTaken === null) {
                 res.sendStatus(404);
             } else {
-                res.send(classTakens);
+                res.send(classTaken);
             }
         })
     })
@@ -28,9 +28,9 @@ router.route('/')
         console.log('POST: /classTaken');
         var StuID = req.body.StuID;
         var ClsID = req.body.ClsID;
-        var Feedback = req.body.Feedback;    
+        // var Feedback = req.body.Feedback;    
 
-        models.ClassTaken.create({ StuID: StuID, ClsID: ClsID, Feedback:Feedback}).then(() => {
+        models.ClassTaken.create({ StuID: StuID, ClsID: ClsID}).then(() => {
             res.sendStatus(200);
         }).catch(() => {
             res.sendStatus(400);

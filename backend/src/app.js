@@ -3,7 +3,7 @@ const cors = require('cors')
 const app = express();
 const port = 3001;
 
-const dataInit = require('./dataInit');
+//const dataInit = require('./dataInit');
 
 app.use(cors())
 app.use(express.json())

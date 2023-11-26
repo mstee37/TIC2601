@@ -16,9 +16,9 @@ router.route('/')
     .post((req, res) => { // to create professor details
         console.log('POST: /professor');
         var PID = req.body.PID;
-        var Pname = req.body.Pname;
+        var PName = req.body.PName;
 
-        models.Professor.create({ PID: PID, Pname: Pname}).then(() => {
+        models.Professor.create({ PID: PID, PName: PName}).then(() => {
             res.sendStatus(200);
         }).catch(() => {
             res.sendStatus(400);
