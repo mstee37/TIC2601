@@ -285,6 +285,11 @@ Module.belongsTo(Module, { foreignKey: 'MPreRequisite', as:'preMod' });
 Student.hasMany(StudentAttendance, {foreignKey:'StuID'});
 Classes.hasMany(StudentAttendance, {foreignKey:'ClsID'});
 
+StudentAttendance.belongsTo(Classes,{foreignKey:'ClsID'})
+StudentAttendance.belongsTo(Student,{foreignKey:'StuID'})
+
+
+
 Notification.belongsTo(Course, { foreignKey: 'CourseID' });
 
 const ModuleCourse = sequelize.define('ModuleCourse', {}, {
@@ -293,6 +298,34 @@ const ModuleCourse = sequelize.define('ModuleCourse', {}, {
 
 Module.belongsToMany(Course, { through: ModuleCourse, sourceKey: 'MID' });
 
+ClassTaken.afterCreate(async (classTakenInstance) => {
+  try {
+    const { StuID, ClsID } = classTakenInstance;
+    const classInstance = await Classes.findByPk(ClsID);
+
+    if (!classInstance) {
+      console.error(`Class with ID ${ClsID} not found.`);
+      return;
+    }
+
+    const startDate = new Date(classInstance.StartDate);
+    const endDate = new Date(classInstance.EndDate);
+    const totalWeeks = Math.ceil((endDate - startDate) / (7 * 24 * 60 * 60 * 1000));
+
+    for (let week = 0; week < totalWeeks; week++) {
+      const currentDate = new Date(startDate);
+      currentDate.setDate(startDate.getDate() + (week * 7));
+        await StudentAttendance.create({
+          StuID,
+          ClsID,
+          Date: currentDate.toISOString().split('T')[0],
+          Attendance: null,
+        });
+    }
+  } catch (error) {
+    console.error(`Error in afterCreate hook: ${error.message}`);
+  }
+});
 
 sequelize.sync();
 module.exports = {sequelize, Module,Course,Classes,ClassTaken,Student,Admin,Professor,StudentAttendance,Notification,Transcript,UserAccount,ModuleCourse}
