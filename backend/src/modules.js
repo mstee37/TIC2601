@@ -21,8 +21,9 @@ router.route('/')
         var MCredit = req.body.MCredit;
         var Mterm = req.body.Mterm;        
         var MPreRequisite = req.body.MPreRequisite;   
+        var ProfID = req.body.ProfID;   
 
-        models.Module.create({ MID: MID, MName: MName, MCredit:MCredit, Mterm: Mterm, MPreRequisite:MPreRequisite}).then(() => {
+        models.Module.create({ MID: MID, MName: MName, MCredit:MCredit, Mterm: Mterm, MPreRequisite:MPreRequisite, ProfID: ProfID}).then(() => {
             res.sendStatus(200);
         }).catch(() => {
             res.sendStatus(400);
@@ -46,6 +47,7 @@ router.route('/')
                 module.MCredit = MCredit;
                 module.Mterm = Mterm;
                 module.MPreRequisite = MPreRequisite;
+                module.ProfID = ProfID;
                 module.save().then(() => {
                     res.sendStatus(200);
                 })
