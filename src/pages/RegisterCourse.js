@@ -14,10 +14,18 @@ function InputFormCourse() {
 
     function processForm() {
 
-        const courseData = { SID: SIDToEdit , SCourseID: SCourseIDToEdit,};
+        var courseData = {
+            "SID": SIDToEdit,
+            "SCourseID": SCourseIDToEdit,
+            "SName": null,
+            "SBatch": null,
+            "SYear": null,
+            "SStatus": null
+        };
 
         if (editMode === 'create') {
-            axios.put('http://localhost:3001/student', courseData)
+
+            axios.post('http://localhost:3001/student', courseData)
                 .then((response) => {
                     setReloadCourses(!reloadCourses);
                 })
@@ -26,7 +34,9 @@ function InputFormCourse() {
                 });
 
         } else if (editMode === 'edit') {
-            axios.post(`http://localhost:3001/student/${SIDToEdit}`, courseData)
+
+
+            axios.put('http://localhost:3001/student', courseData)
                 .then((response) => {
                     setReloadCourses(!reloadCourses);
                     setEditMode('create');
@@ -77,7 +87,6 @@ function TableRowsCourses() {
 
     function updateCourse(event, SID) {
         setEditMode('edit');
-        console.log('Editing ' + SID);
 
         var course = courses.find(course => course.SID === SID);
         setSCourseIDToEdit(course.SCourseID);
