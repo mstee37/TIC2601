@@ -38,7 +38,7 @@ app.use('/professor', Professor);
 const studentAttendance = require('./studentAttendance') ;
 app.use('/studentAttendance', studentAttendance);
 
-const Transcript = require('./transcript') ;
+const Transcript = require('./Transcript') ;
 app.use('/transcript', Transcript);
 
 const registerCourse = require('./registerCourse');
