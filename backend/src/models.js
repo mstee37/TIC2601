@@ -244,18 +244,17 @@ const Transcript = sequelize.define('Transcript', {
   
 const Notification = sequelize.define('Notification', {
       NotID: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.STRING(20),
         primaryKey: true,
       },
       // push notification to each course 
       CourseID: {
         type: DataTypes.STRING(10),
       },
-      // DateTime: {
-      //   type: DataTypes.DATEONLY,
-      //   allowNull: false,
-      // },
+      DateTime: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
       Message: {
         type: DataTypes.STRING(500),
         allowNull: false,
@@ -272,7 +271,9 @@ Admin.belongsTo(UserAccount, { foreignKey: 'AID' });
 
 Transcript.belongsTo(Student, { foreignKey: 'StuID' });
   
-Module.hasMany(Transcript, {foreignKey: 'ModID'})
+Module.hasMany(Transcript, {foreignKey: 'ModID'});
+Transcript.belongsTo(Module,{foreignKey: 'ModID'});
+
 Course.hasMany(Student, { foreignKey: 'SCourseID' });
   
 Professor.hasMany(Module, { foreignKey: 'ProfID' });
