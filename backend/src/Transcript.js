@@ -13,29 +13,21 @@ router.route('/')
             if (req.query.ModID) {
                 console.log('GET:/transcript?ProfID=&ModID=' + req.query.ProfID + req.query.ModID);
                 var ModIDs=req.query.ModID;
-                models.Classes.findAll({
-                    include: {
-                    model: models.Module,
-                    where: { MID:ModIDs,ProfID: ProfIDs},
-                    attributes:[]
-                    }
-                }).then((classes) => {
-                    console.log('Fetched classes:', classes);
-                    if (classes === null) {
-                        res.sendStatus(404);
-                    } else {
-                        res.send(classes);
-                    }
-                    
-                })
-
-            }else{
                 models.Transcript.findAll({
-                    include: {
+                    attributes:["StuID",[models.sequelize.literal('"Student"."SName"'), 'SName'],
+                    "ModID",
+                    "Grade",
+                    "TYear"],
+                    include: [{
                     model: models.Module,
-                    where: { ProfID: ProfIDs },
-                    attributes:[]
-                    }
+                    where: { MID:ModIDs,ProfID: ProfIDs },
+                    attributes:[],
+                   
+                    },{
+                        model:models.Student,
+                        attributes:[],
+                    }]
+                    
                     
                 }).then((modulesgrades) => {
                     if (modulesgrades === null) {
@@ -44,6 +36,23 @@ router.route('/')
                         res.send(modulesgrades);
                     }
                 })
+                
+
+            }else{
+                models.Module.findAll({
+                    
+                    where: { ProfID: ProfIDs},
+                    attributes:["MID","MName","ProfID"]
+                }).then((modules) => {
+                    console.log('Fetched classes:', modules);
+                    if (modules === null) {
+                        res.sendStatus(404);
+                    } else {
+                        res.send(modules);
+                    }
+                    
+                })
+                
             }
     })
     .post((req, res) => { //update
