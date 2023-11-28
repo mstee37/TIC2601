@@ -8,35 +8,26 @@ const router = express.Router()
 
 router.route('/')
     .get((req, res) => { // to get transcript List
-        console.log('GET: /transcript?ProfID=' + req.query.ProfID);
+        console.log('GET: /transcript')
+        if (req.query.ProfID){
+            console.log('GET: /transcript?ProfID=' + req.query.ProfID);
             var ProfIDs = req.query.ProfID;  
             if (req.query.ModID) {
                 console.log('GET:/transcript?ProfID=&ModID=' + req.query.ProfID + req.query.ModID);
                 var ModIDs=req.query.ModID;
-                models.Classes.findAll({
-                    include: {
-                    model: models.Module,
-                    where: { MID:ModIDs,ProfID: ProfIDs},
-                    attributes:[]
-                    }
-                }).then((classes) => {
-                    console.log('Fetched classes:', classes);
-                    if (classes === null) {
-                        res.sendStatus(404);
-                    } else {
-                        res.send(classes);
-                    }
-                    
-                })
-
-            }else{
                 models.Transcript.findAll({
-                    include: {
+                    attributes:["StuID",[models.sequelize.literal('"Student"."SName"'), 'SName'],
+                    "ModID",
+                    "Grade",
+                    "TYear"],
+                    include: [{
                     model: models.Module,
-                    where: { ProfID: ProfIDs },
-                    attributes:[]
-                    }
-                    
+                    where: { MID:ModIDs,ProfID: ProfIDs },
+                    attributes:[],
+                    },{
+                        model:models.Student,
+                        attributes:[],
+                    }]
                 }).then((modulesgrades) => {
                     if (modulesgrades === null) {
                         res.sendStatus(404);
@@ -44,7 +35,32 @@ router.route('/')
                         res.send(modulesgrades);
                     }
                 })
+
+            }else{
+                models.Module.findAll({
+                    
+                    where: { ProfID: ProfIDs},
+                    attributes:["MID","MName","ProfID"]
+                }).then((modules) => {
+                    console.log('Fetched classes:', modules);
+                    if (modules === null) {
+                        res.sendStatus(404);
+                    } else {
+                        res.send(modules);
+                    }
+                    
+                })
+                
             }
+        }else{models.Transcript.findAll().then((transcripts) => {console.log('Fetched classes:', transcripts);
+        if (transcripts === null) {
+            res.sendStatus(404);
+        } else {
+            res.send(transcripts);
+        }
+        
+        })
+    }   
     })
     .post((req, res) => { //update
         console.log('POST: /transcript?ProfID=' + req.query.ProfID);
@@ -104,3 +120,4 @@ router.route('/')
 
 
 module.exports = router;
+

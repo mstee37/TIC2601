@@ -15,12 +15,12 @@ router.route('/')
     })
     .post((req, res) => { // to create notification details
         console.log('POST: /notification');
-        var NotID = req.body.NotID;
+        //var NotID = req.body.NotID;
         // var DateTime = req.body.DateTime;
         var CourseID = req.body.CourseID;
         var Message = req.body.Message;      
 
-        models.Notification.create({ NotID: NotID, CourseID : CourseID, Message:Message}).then(() => {
+        models.Notification.create({ CourseID : CourseID, Message: Message}).then(() => {
             res.sendStatus(200);
         }).catch(() => {
             res.sendStatus(400);

@@ -6,6 +6,28 @@ const models = require('./models');
 
 const router = express.Router()
 
+router.route('/status')
+    .put((req, res) => { // to update e.g. update SStatus for the enrolment status
+        console.log('PUT: /student?SID=');
+
+        var SID = req.query.SID;
+        var SStatus = req.body.SStatus;
+
+        models.Student.findByPk(SID).then((student) => {
+            if (student === null) {
+                res.sendStatus(404);
+            }
+            else {
+
+                student.SStatus = SStatus;
+
+                student.save().then(() => {
+                    res.sendStatus(200);
+                })
+            }
+        })
+    })
+
 router.route('/')
     .get((req, res) => { // to get student List
         console.log('GET: /student');
