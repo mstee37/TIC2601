@@ -8,8 +8,15 @@ const router = express.Router()
 
 router.route('/')
     .get((req, res) => { // to get notification List
-        console.log('GET: /notification');
-        models.Notification.findAll().then((notifications) => {
+        console.log('GET: /notification?CourseID='+req.query.CourseID);
+        var CourseIDs = req.query.CourseID; 
+        models.Notification.findAll({
+            order: [
+                [ 'DateTime', 'DESC']
+              ],
+              where:{CourseID:CourseIDs}
+        }
+        ).then((notifications) => {
             res.send(notifications);
         })
     })
@@ -64,3 +71,4 @@ router.route('/')
 
 
 module.exports = router;
+

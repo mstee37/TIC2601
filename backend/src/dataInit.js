@@ -1,6 +1,5 @@
 const models = require('./models');
 
-
 const bulkCreate = async (model, data, options = {}) => {
     try {
       const result = await model.bulkCreate(data, { validate: true ,...options});
@@ -123,6 +122,14 @@ const userData = [
     { StuID: 'S008', ClsID: 'C005', Feedback: null }
   ];
 
+  const notificationData=[
+    {CourseID:"CS101",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"},
+    {CourseID:"CS102",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"},
+    {CourseID:"CS103",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"},
+    {CourseID:"CS104",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"},
+    {CourseID:"CS105",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"}
+]
+
 
   
 // models.sequelize.sync().then(() => {
@@ -154,8 +161,7 @@ models.sequelize.sync({ force: true })
     await bulkCreate(models.ModuleCourse, moduleCourseData);
 
     await bulkCreate(models.ClassTaken, classTakenData, { individualHooks: true });
-
-
+    await bulkCreate(models.Notification, notificationData);
 
 
         console.log('Data Loaded.');
@@ -169,5 +175,3 @@ models.sequelize.sync({ force: true })
   .catch(error => {
     console.error('Unable to create tables:', error);
   });
-
-

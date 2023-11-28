@@ -1,80 +1,103 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import InputId from "../components/InputId";
-import InputDate from "../components/InputDate";
 
-// stuid, modid, grade, tyear
-
-export default function MarkAttendance() {
+function ManageAttendance() {
+    const [profId, setProfId] = useState('');
     const [classId, setClassId] = useState('');
-    const [classDate, setClassDate] = useState('');
-    const [students, setStudents] = useState([
-        { studentId: 'S001', name: 'John', attendance: 'N' },
-        { studentId: 'S002', name: 'Jane', attendance: 'N' },
-    ]);
+    const [date, setDate] = useState('');
+    const [attendanceList, setAttendanceList] = useState([]);
 
-    const handleAttendanceChange = (studentId, attendance) => {
-        setStudents(students.map(student =>
-            student.studentId === studentId ? { ...student, attendance: attendance } : student
-        ));
+    const fetchAttendance = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/studentAttendance`, {
+                params: { ProfID: profId, ClsID: classId, Date: date }
+            });
+            setAttendanceList(response.data);
+        } catch (error) {
+            console.error('Error fetching attendance:', error);
+        }
     };
 
-    const handleSubmit = () => {
-        const newAttendance = {
-            classId,
-            classDate,
-            students
-        };
-
-        axios.post('http://localhost:3001/studentAttendance', newAttendance)
-             .then(response => {
-                 console.log('Attendance submitted successfully');
-             }).catch(error => {
-                 console.error('Error submitting attendance:', error);
-             });
+    const handleAttendanceChange = (studentId, newAttendance) => {
+        setAttendanceList(currentList => 
+            currentList.map(item => 
+                item.StuID === studentId ? { ...item, Attendance: newAttendance } : item
+            )
+        );
     };
 
-    const shouldShowTable = classId && classDate;
+    const submitAttendance = async () => {
+        try {
+            await Promise.all(attendanceList.map(student => 
+                axios.post(`http://localhost:3001/studentAttendance`, {
+                    StuID: student.StuID,
+                    ClsID: student.ClsID,
+                    Date: student.Date,
+                    Attendance: student.Attendance
+                })
+            ));
+            alert('Attendance updated successfully');
+        } catch (error) {
+            console.error('Error updating attendance:', error);
+        }
+    };
 
     return (
         <div>
-            <h1>Mark Attendance</h1>
+            <h2>Mark Student Attendance</h2>
             <div>
-                <InputId label='Class ID' value={classId} setValue={setClassId} />
-                <InputDate label='Class Date' minDate='2020-01-01' maxDate='2030-12-31' value={classDate} setValue={setClassDate} />
+                <input
+                    type="text"
+                    placeholder="Professor ID"
+                    value={profId}
+                    onChange={(e) => setProfId(e.target.value)}
+                />
+                <input
+                    type="text"
+                    placeholder="Class ID"
+                    value={classId}
+                    onChange={(e) => setClassId(e.target.value)}
+                />
+                <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                />
+                <button onClick={fetchAttendance}>Click to Mark Attendance</button>
             </div>
-            {shouldShowTable && (
-                <>
-                    <table border={'1'} style={{ width: '100%', position: "relative" }}>
-                        <thead>
-                            <tr>
-                                <th>Student ID</th>
-                                <th>Name</th>
-                                <th>Class ID</th>
-                                <th>Class Date</th>
-                                <th>Attendance Y/N</th>
+            {attendanceList.length > 0 && (
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Class ID</th>
+                            <th>Date</th>
+                            <th>Attendance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {attendanceList.map((attendance, index) => (
+                            <tr key={index}>
+                                <td>{attendance.StuID}</td>
+                                <td>{attendance.ClsID}</td>
+                                <td>{attendance.Date}</td>
+                                <td>
+                                    <select
+                                        value={attendance.Attendance}
+                                        onChange={(e) => handleAttendanceChange(attendance.StuID, e.target.value)}
+                                    >
+                                        <option value="N">No</option>
+                                        <option value="Y">Yes</option>
+                                    </select>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {students.map((student, index) => (
-                                <tr key={index}>
-                                    <td>{student.studentId}</td>
-                                    <td>{student.name}</td>
-                                    <td>{classId}</td>
-                                    <td>{classDate}</td>
-                                    <td>
-                                        <select value={student.attendance} onChange={e => handleAttendanceChange(student.studentId, e.target.value)}>
-                                            <option value="Y">Y</option>
-                                            <option value="N">N</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <button onClick={handleSubmit}>Submit Attendance</button>
-                </>
+                        ))}
+                    </tbody>
+                </table>
             )}
+            <button onClick={submitAttendance}>Submit Updates</button>
         </div>
     );
 }
+
+export default ManageAttendance;
