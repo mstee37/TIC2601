@@ -1,46 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import InputId from "../components/InputStudentID";
 import axios from 'axios';
 
-export default function Transcript() {
+function ViewTranscript() {
     const [studentId, setStudentId] = useState('');
-    const [transcripts, setTranscripts] = useState([]);
+    const [allTranscripts, setAllTranscripts] = useState([]);
+    const [filteredTranscripts, setFilteredTranscripts] = useState([]);
 
-    useEffect(
-        () => {
-        if (studentId) {
-            axios.get(`http://localhost:3001/Transcripts?StuID=${studentId}`).then((response) => {
-                setTranscripts(response.data);
-            })}
-        }, [studentId]
-    )
+    useEffect(() => {
+        // Fetch all transcripts initially
+        const fetchAllTranscripts = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/transcript');
+                setAllTranscripts(response.data);
+            } catch (error) {
+                console.error('Error fetching transcripts:', error);
+            }
+        };
+
+        fetchAllTranscripts();
+    }, []);
+
+    const handleFetchTranscript = () => {
+        // Filter transcripts based on the entered student ID
+        const filtered = allTranscripts.filter(transcript => transcript.StuID.toString() === studentId);
+        setFilteredTranscripts(filtered);
+    };
 
     return (
         <div>
-            <h1>Student Transcript</h1>
+            <h2>View Transcript</h2>
             <div>
-                <InputId label='Student ID' value={studentId} setValue={setStudentId} />
+                <label htmlFor="studentId">Student ID:</label>
+                <input
+                    type="text"
+                    id="studentId"
+                    value={studentId}
+                    onChange={(e) => setStudentId(e.target.value)}
+                />
+                <button onClick={handleFetchTranscript}>Fetch Transcript</button>
             </div>
-            <table border={'1'} style={{ width: '100%', position: "relative" }}>
-                <thead>
-                    <tr>
-                        <th>StuID</th>
-                        <th>ModID</th>
-                        <th>Grade</th>
-                        <th>TYear</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {transcripts.map((transcript, index) => (
-                        <tr key={index}>
-                            <td>{transcript.StuID}</td>
-                            <td>{transcript.ModID}</td>
-                            <td>{transcript.Grade}</td>
-                            <td>{transcript.TYear}</td>
+            {filteredTranscripts.length > 0 && (
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Module ID</th>
+                            <th>Grade</th>
+                            <th>Transcript Year</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {filteredTranscripts.map((transcript, index) => (
+                            <tr key={index}>
+                                <td>{transcript.ModID}</td>
+                                <td>{transcript.Grade}</td>
+                                <td>{transcript.TYear}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 }
+
+export default ViewTranscript;
