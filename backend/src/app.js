@@ -44,6 +44,10 @@ app.use('/transcript', Transcript);
 const registerCourse = require('./registerCourse');
 app.use('/registerCourse', registerCourse);
 
+const courseEnrollment = require('./courseenrollment');
+app.use('/courseEnrollment', courseEnrollment);
+
 app.listen(port, function () {
     console.log(`Express app listening on port ${port}!`);
 });
+
