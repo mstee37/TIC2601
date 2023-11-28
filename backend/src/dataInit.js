@@ -123,11 +123,11 @@ const userData = [
   ];
 
   const notificationData=[
-    {CourseID:"CS101",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"},
-    {CourseID:"CS102",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"},
-    {CourseID:"CS103",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"},
-    {CourseID:"CS104",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"},
-    {CourseID:"CS105",DateTime:new Date(),Message:"The feedback exercise will ends on 30 November 2023 23:59"}
+    {CourseID:"CS101",Message:"The feedback exercise will ends on 30 November 2023 23:59"},
+    {CourseID:"CS102",Message:"The feedback exercise will ends on 30 November 2023 23:59"},
+    {CourseID:"CS103",Message:"The feedback exercise will ends on 30 November 2023 23:59"},
+    {CourseID:"CS104",Message:"The feedback exercise will ends on 30 November 2023 23:59"},
+    {CourseID:"CS105",Message:"The feedback exercise will ends on 30 November 2023 23:59"}
 ]
 
 
@@ -175,3 +175,6 @@ models.sequelize.sync({ force: true })
   .catch(error => {
     console.error('Unable to create tables:', error);
   });
+
+
+
