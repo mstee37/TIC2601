@@ -244,7 +244,8 @@ const Transcript = sequelize.define('Transcript', {
   
 const Notification = sequelize.define('Notification', {
       NotID: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
       // push notification to each course 
@@ -253,6 +254,7 @@ const Notification = sequelize.define('Notification', {
       },
       DateTime: {
         type: DataTypes.DATEONLY,
+        defaultValue: new Date(),
         allowNull: false,
       },
       Message: {
