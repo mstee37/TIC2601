@@ -271,7 +271,9 @@ Admin.belongsTo(UserAccount, { foreignKey: 'AID' });
 
 Transcript.belongsTo(Student, { foreignKey: 'StuID' });
   
-Module.hasMany(Transcript, {foreignKey: 'ModID'})
+Module.hasMany(Transcript, {foreignKey: 'ModID'});
+Transcript.belongsTo(Module,{foreignKey: 'ModID'});
+
 Course.hasMany(Student, { foreignKey: 'SCourseID' });
   
 Professor.hasMany(Module, { foreignKey: 'ProfID' });

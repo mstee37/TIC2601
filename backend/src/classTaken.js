@@ -6,13 +6,16 @@ const models = require('./models');
 
 const router = express.Router()
 
-router.route('/')
+
+router.route('/all')
     .get((req, res) => { // to get classTaken List
         console.log('GET: /classTaken');
         models.ClassTaken.findAll().then((classTakens) => {
             res.send(classTakens);
         })
     })
+
+router.route('/')
     .get((req, res) => { // to get classTaken List with student ID
         console.log('GET: /classTaken?StuID=' + req.query.StuID);
         var StuID = req.query.StuID;
@@ -37,8 +40,8 @@ router.route('/')
         })
     })
     .put((req, res) => { // to update to fill up the feedback using student ID in the URL
-        console.log('PUT: /classTaken?StuID=' + req.query.StuID);
-        var StuID = req.query.StuID;
+        console.log('PUT: /classTaken' );
+        var StuID = req.body.StuID;
         var ClsID = req.body.ClsID;
         var Feedback = req.body.Feedback; 
         models.ClassTaken.findOne({ where: { StuID: StuID } }).then((classTaken) => {

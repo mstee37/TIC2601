@@ -67,40 +67,4 @@ router.route('/')
             }
           });
       })
-      // .post((req, res) => { // to create transcript details
-      //     console.log('POST: /transcript');
-      //     var StuID = req.body.StuID;
-      //     var ModID = req.body.ModID;
-      //     var Grade = req.body.Grade;
-      
-      //     // Retrieve the current year
-      //     var TYear = new Date().getFullYear();
-      
-      //     models.Transcript.create({ StuID: StuID, ModID: ModID, Grade: Grade, TYear: TYear })
-      //         .then(() => {
-      //             res.sendStatus(200);
-      //         })
-      //         .catch(() => {
-      //             res.sendStatus(400);
-      //         });
-      // })
-    // .delete((req, res) => { //delete transcript
-    //     console.log('DELETE: /transcript?StuID=&ModID=' + req.query.StuID + req.query.ModID);
-
-    //     var StuID = req.body.StuID;
-    //     var ModID = req.body.ModID;
-
-    //     models.Transcript.findByPk(StuID,ModID).then((transcript) => {
-    //         if (transcript === null) {
-    //             res.sendStatus(404);
-    //         }
-    //         else {
-    //             transcript.destroy().then(() => {
-    //                 res.sendStatus(200);
-    //             })
-    //         }
-    //     })
-    // });
-
-
 module.exports = router;
