@@ -1,12 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { GradingToEditContext } from "../contexts/GradingToEditContext";
 import DropdownCourse from "../components/DropdownCourse";
 import DropdownModule from "../components/DropdownModule";
 import DropdownClass from "../components/DropdownClass";
+import { UserContext } from "../contexts/UserContext";
+import axios from "axios";
 
 
 function Selection(){
     const{grade, setGrade, module, setModule, classes, setClasses} = useContext(GradingToEditContext);
+    
 
     return(
         <>
@@ -41,6 +44,8 @@ function Selection(){
 function TableRowGrading(){
 
     const{grade, setGrade, module, setModule, classes, setClasses} = useContext(GradingToEditContext);
+    const {user, setUser} = useContext(UserContext);
+
 
     const handleGradingChange = (studentId, grade_selected) => {
         setGrade(grade.map(grades =>
@@ -48,8 +53,20 @@ function TableRowGrading(){
             
         ));
     };
+
+
+    // useEffect(
+    //     () => {
+    //         axios.get('http://localhost:3001/transcript',{params: {'ProfID ' : {user}},{'ModID' : {module}} }).then((response) => {
+    //             setClasses(response.data);
+    //         })
+    //     }, [classes]
+    // )
     
     return(
+
+        
+
 
         <>
         
@@ -57,10 +74,10 @@ function TableRowGrading(){
         {grade.map(
                 grades =>
                 <tr key={grades.StuID}>
-                    <td>{grades.ModID}</td><td>{grades.StuID}</td><td>James Hardy</td><td>{grades.TYear}</td>
+                    <td>{grades.ModID}</td><td>{grades.StuID}</td><td>{grades.SName}</td><td>{grades.TYear}</td>
                     <td>
                     <select value={grades.Grade} onChange={e => handleGradingChange(grades.StuID, e.target.value)}>
-                            <option value="TBD">TBD</option>
+                            <option value=""></option>
                             <option value="A+">A+</option>
                             <option value="A">A</option>
                             <option value="A-">A-</option>
@@ -92,10 +109,53 @@ function TableRowGrading(){
 
 function TableGrading(){
     const{grade, setGrade, module, setModule, classes, setClasses} = useContext(GradingToEditContext);
+    const {user, setUser} = useContext(UserContext);
+
 
     function processForm(){
         console.log(grade);
+
+        for(var x=0;x<grade.length;x++)
+        {
+            let obj = grade[x];
+
+            console.log(obj.StuID);
+
+            var stuRow = {'StuID' : obj.StuID, 'ModID' : obj.ModID, 'Grade' : obj.Grade, 'TYear' : obj.TYear};
+            axios.post('http://localhost:3001/transcript', stuRow).then((response=>{
+                console.log(response.status);
+            }))
+        }
+
+        // axios.post('http://localhost:3001/transcript', grade).then((response=>{
+        //     console.log(response.status);
+            
+        // }))
+        //console.log({user});
+
+        // var params = new URLSearchParams();
+        // params.append("ProfID", user);
+        // params.append("ModID", module);
+        // var request = {
+        //     params: params
+        // };
+
+        // const searchParams = new URLSearchParams();
+        // searchParams.append('ProfID', user);
+        // searchParams.append('ModID', module);
+        //console.log(searchParams.toString());
+
+    //     axios.get('http://localhost:3001/transcript',searchParams).then((response) => {
+    //             //setClasses(response.data);
+    //             console.log(module);
+    //             console.log(response.data);
+    // })
+
+        
+
+    
     }
+    
 
     return(
         <>
@@ -122,15 +182,32 @@ function TableGrading(){
 
 export default function Grading(){
 
+    // const[grade, setGrade] = useState(
+    //     [
+    //         {'StuID' : 'S001', 'ModID' : 'TIC2301', 'Grade' : 'TBD', 'TYear' : 2},
+    //         {'StuID' : 'S002', 'ModID' : 'TIC2601', 'Grade' : 'TBD', 'TYear' : 2}
+    //     ]
+    // )
     const[grade, setGrade] = useState(
-        [
-            {'StuID' : 'S001', 'ModID' : 'TIC2301', 'Grade' : 'TBD', 'TYear' : 2},
-            {'StuID' : 'S002', 'ModID' : 'TIC2601', 'Grade' : 'TBD', 'TYear' : 2}
-        ]
+        []
     )
 
     const [module, setModule] = useState('');
     const [classes, setClasses] = useState('');
+    const [reloadGrade, setReloadGrade] = useState(true);
+    const {user, setUser} = useContext(UserContext);
+
+
+    useEffect(
+        () => {
+        axios.get('http://localhost:3001/transcript',{params: 
+        {'ProfID': user, 
+        'ModID':module,}}).then((response) => {
+                //console.log(response.data);
+                setGrade(response.data);
+            })
+        }, [module]
+    )
 
 
     return(
@@ -138,7 +215,8 @@ export default function Grading(){
             <GradingToEditContext.Provider value={{
                 grade, setGrade,
                 module, setModule,
-                classes, setClasses
+                classes, setClasses,
+                reloadGrade, setReloadGrade
             }}>
 
             <div className="row" style={{ width: '100%' }}>
