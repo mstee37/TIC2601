@@ -24,6 +24,7 @@ const FeedbackForm = () => {
             // Optionally, handle success, reset form, or show a success message
             console.log('Feedback submitted successfully');
             setFeedback({ StuID: '', ClsID: '', Feedback: '' }); // Reset form fields
+            alert('Feedback submitted successfully');
         } catch (error) {
             console.error('Error submitting feedback:', error);
             // Optionally, show an error message to the user
