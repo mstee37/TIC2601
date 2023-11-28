@@ -8,11 +8,10 @@ const router = express.Router()
 
 router.route('/')
     .get((req, res) => { // to get studentAttendance List
-        console.log('GET: /studentAttendance?ProfID=&ClsID=&Date=' + req.query.ProfID + req.query.ClsID + req.query.Date+ req.query.RoomNo);
+        console.log('GET: /studentAttendance?ProfID=&ClsID=&Date=' + req.query.ProfID + req.query.ClsID + req.query.Date);
         var ProfIDs = req.query.ProfID; 
         var ClsIDs = req.query.ClsID; 
         var Dates=req.query.Date;
-        var RoomNos=req.query.RoomNo;
         models.StudentAttendance.findAll({
             attributes: [
               'ClsID','StuID',[models.sequelize.literal('"Student"."SName"'), 'Name'],'Date','Attendance'],
@@ -89,4 +88,5 @@ router.route('/')
 
 
 module.exports = router;
+
 
