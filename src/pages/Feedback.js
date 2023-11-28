@@ -1,52 +1,69 @@
-import { useState } from 'react';
-import InputId from "../components/InputId";
-import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
+import React, { useState } from 'react';
 import axios from 'axios';
 
-export default function SendFeedback() {
-    const [classId, setClassId] = useState('');
-    const [feedback, setFeedback] = useState('');
+const FeedbackForm = () => {
+    const [feedback, setFeedback] = useState({
+        StuID: '', // Student ID
+        ClsID: '', // Class ID
+        Feedback: '', // Feedback text
+    });
 
-    const feedbackHandler = (e) => {
-        setFeedback(e.target.value);
-    }
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFeedback({ ...feedback, [name]: value });
+    };
 
-    function submitFeedback() {
-
-        const feedbackData = {
-            classId,
-            feedback
-        };
-
-        // axios.put('http://localhost:3001/classTaken', feedbackData)
-            // .then(response => {
-                console.log("Sent feedback for class ID:", classId, "with the feedback:", feedback);
-                setClassId('');
-                setFeedback('');
-            // })
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put(`http://localhost:3001/classTaken`, {
+                StuID: feedback.StuID,
+                ClsID: feedback.ClsID,
+                Feedback: feedback.Feedback,
+            });
+            // Optionally, handle success, reset form, or show a success message
+            console.log('Feedback submitted successfully');
+            setFeedback({ StuID: '', ClsID: '', Feedback: '' }); // Reset form fields
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            // Optionally, show an error message to the user
+        }
+    };
 
     return (
-        <>
-            <div className="send-feedback-view">
-                <h1>Send Feedback</h1>
-                <div>
-                    <label>
-                        Class ID:
-                        <InputId label='Class ID' value={classId} setValue={setClassId} />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Feedback:
-                    </label>
-                </div>
-                <div>
-                    <textarea className="feedback-box" value={feedback} onChange={feedbackHandler}></textarea>
-                </div>
-                <button type="submit" onClick={submitFeedback}>Submit</button>
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="StuID">Student ID:</label>
+                <input
+                    type="text"
+                    id="StuID"
+                    name="StuID"
+                    value={feedback.StuID}
+                    onChange={handleInputChange}
+                />
             </div>
-        </>
-    )
+            <div>
+                <label htmlFor="ClsID">Class ID:</label>
+                <input
+                    type="text"
+                    id="ClsID"
+                    name="ClsID"
+                    value={feedback.ClsID}
+                    onChange={handleInputChange}
+                />
+            </div>
+            <div>
+                <label htmlFor="Feedback">Feedback:</label>
+                <textarea
+                    id="Feedback"
+                    name="Feedback"
+                    value={feedback.Feedback}
+                    onChange={handleInputChange}
+                />
+            </div>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    );
 };
+
+export default FeedbackForm;
