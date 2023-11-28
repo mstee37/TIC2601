@@ -62,8 +62,8 @@ router.route('/')
         })
     }   
     })
-    .post((req, res) => { //update
-        console.log('POST: /transcript?ProfID=' + req.query.ProfID);
+   .post((req, res) => { //update
+        console.log('POST: /transcript');
         var StuID = req.body.StuID;
         var ModID = req.body.ModID;
         var Grade = req.body.Grade;
