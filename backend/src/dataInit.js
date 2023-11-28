@@ -64,7 +64,7 @@ const userData = [
     { SID: 'S007', SCourseID: 'CS102', SName: 'Daniel Turner', SBatch: '2023/24', SYear: 1, SStatus:'A' },
     { SID: 'S008', SCourseID: 'CS103', SName: 'Sophia White', SBatch: '2023/24', SYear: 1, SStatus:'A' },
     { SID: 'S009', SCourseID: 'CS105', SName: 'Liam Martinez', SBatch: null, SYear: null, SStatus: 'R'},
-    { SID: 'S010', SCourseID: 'CS101', SName: 'Ava Smith', SBatch: null, SYear: null, SStatus: 'R' },
+    { SID: 'S010', SCourseID: 'CS101', SName: 'Ava Smith', SBatch: null, SYear: null, SStatus: null },
     { SID: 'S011', SCourseID: null, SName: 'Loraine Taylor', SBatch: null, SYear: null, SStatus: null},
     { SID: 'S012', SCourseID: null, SName: 'Bruno Caleb', SBatch: null, SYear: null, SStatus: null },
   ];
@@ -169,6 +169,5 @@ models.sequelize.sync({ force: true })
   .catch(error => {
     console.error('Unable to create tables:', error);
   });
-
 
 
