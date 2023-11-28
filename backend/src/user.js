@@ -6,7 +6,13 @@ const models = require('./models');
 
 const router = express.Router()
 
-
+router.route('/all')
+    .get((req, res) => { // to get useraccount List
+        console.log('GET: /user');
+        models.UserAccount.findAll().then((users) => {
+            res.send(users);
+        })
+    })
 
 router.route('/')
     .get((req, res) => { // to get useraccount List
@@ -17,7 +23,6 @@ router.route('/')
 
         console.log('GET: /user?UID='+req.query.UID);
         console.log(req.query.UID);
-
         var UIDs = req.query.UID;
 
         models.UserAccount.findByPk(UIDs).then((users)=> {
