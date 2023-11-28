@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
+import { useContext } from "react";
+
+import { UserContext } from "../contexts/UserContext";
 
 function RegisterCourse() {
     const [students, setStudents] = useState([]);
     const [editingStudent, setEditingStudent] = useState(null);
     const [inputStudentId, setInputStudentId] = useState('');
+
+    const userID = useContext(UserContext).user;
+
+    // console.log("ID= ", userID);
 
     useEffect(() => {
         fetchStudents();
@@ -46,7 +53,11 @@ function RegisterCourse() {
     };
 
     const displayFilteredStudent = () => {
-        const student = students.find(s => s.SID.toString() === inputStudentId);
+
+        // const student = students.find(s => s.SID.toString() === inputStudentId);
+
+        const student = students.find(s => s.SID.toString() === userID);
+        
         if (student) {
             setEditingStudent(student);
         } else {
@@ -59,13 +70,13 @@ function RegisterCourse() {
         <div>
             <h2>Register Course</h2>
             <div>
-                <label htmlFor="inputStudentId">Input Student ID: </label>
+                {/* <label htmlFor="inputStudentId">Input Student ID: </label>
                 <input
                     type="text"
                     id="inputStudentId"
                     value={inputStudentId}
                     onChange={handleInputStudentIdChange}
-                />
+                /> */}
                 <button onClick={displayFilteredStudent}>Click to Input/Edit Course</button>
             </div>
             {editingStudent && (
