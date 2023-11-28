@@ -102,7 +102,7 @@ function StudentList() {
         <div>
             <h2>Register your couse below by editing Course ID </h2>
             <div>
-                <label htmlFor="filterId">Filter by ID:</label>
+                <label htmlFor="filterId">Input Student ID:</label>
                 <input
                     type="text"
                     id="filterId"
