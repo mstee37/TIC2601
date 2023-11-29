@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { EnrollmentToEditContext } from "../contexts/EnrollmentToEditContext";
 import DropdownCourse from "../components/DropdownCourse";
-
+import axios from "axios";
 
 function TableRowEnrollment(){
 
@@ -9,7 +9,7 @@ function TableRowEnrollment(){
 
     const handleStatusChange = (studentId, status_selected)=> {
         setStatus(status.map(statuses =>
-            statuses.StuID === studentId ? { ...statuses, Status: status_selected } : statuses
+            statuses.SID === studentId ? { ...statuses, SStatus: status_selected } : statuses
             
         ));
     };
@@ -19,11 +19,11 @@ function TableRowEnrollment(){
     return(
         <>
             {status.map(
-                        status_selected =>
-                        <tr key={status_selected.StuID}>
-                            <td>{status_selected.CrsID}</td><td>{status_selected.StuID}</td><td>{status_selected.SName}</td>
+                        status_selected =>  
+                        <tr key={status_selected.SID}>
+                            <td>{status_selected.SCourseID}</td><td>{status_selected.SID}</td><td>{status_selected.SName}</td>
                             <td>
-                            <select value={status_selected.Status} onChange={e => handleStatusChange(status_selected.StuID, e.target.value)}>
+                            <select value={status_selected.SStatus} onChange={e => handleStatusChange(status_selected.SID, e.target.value)}>
                                 <option value=""></option>
                                 <option value="A">A</option>
                                 <option value="R">R</option>
@@ -41,8 +41,24 @@ function TableEnrollment(){
     
     const{status, setStatus, course, setCourse} = useContext(EnrollmentToEditContext);
 
+    
+    
+
     function processForm(){
         console.log(course);
+
+        for(var x=0;x<status.length;x++)
+        {
+            let obj = status[x];
+
+            console.log(obj.SID);
+
+            var stuRow = {'SID' : obj.SID, 'SCourseID' : obj.SCourseID, 'SStatus' : obj.SStatus};
+            axios.post('http://localhost:3001/courseEnrollment', stuRow).then((response=>{
+                console.log(response.status);
+            }))
+        }
+
     }
 
     return(
@@ -69,14 +85,30 @@ function TableEnrollment(){
 
 export default function Enrollment(){
 
+    // const [status, setStatus] = useState(
+    //     [
+    //         {'SCourseID' : 'Btech', 'SID' : 'S002', 'SName' : 'John Doe' ,'SStatus' : 'R'},
+    //         {'SCourseID' : 'Btech', 'SID' : 'S003', 'SName' : 'James' ,'SStatus' : ''}
+    //     ]
+    // )
+
     const [status, setStatus] = useState(
         [
-            {'CrsID' : 'Btech', 'StuID' : 'S002', 'SName' : 'John Doe' ,'Status' : 'R'},
-            {'CrsID' : 'Btech', 'StuID' : 'S003', 'SName' : 'James' ,'Status' : ''}
         ]
     )
 
     const [course, setCourse] = useState('');
+
+
+    useEffect(
+        () => {
+        axios.get('http://localhost:3001/courseEnrollment',{params: 
+        {'SCourseID':course,}}).then((response) => {
+                console.log(response.data);
+                setStatus(response.data);
+            })
+        }, [course]
+    )
 
 
     return(
