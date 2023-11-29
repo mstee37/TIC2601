@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import { useContext } from "react";
+
+import { UserContext } from "../contexts/UserContext";
+
 function ManageAttendance() {
     const [profId, setProfId] = useState('');
     const [classId, setClassId] = useState('');
     const [date, setDate] = useState('');
     const [attendanceList, setAttendanceList] = useState([]);
 
+    const userID = useContext(UserContext).user;
+
     const fetchAttendance = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/studentAttendance`, {
-                params: { ProfID: profId, ClsID: classId, Date: date }
+                params: { ProfID: userID, ClsID: classId, Date: date }
             });
             setAttendanceList(response.data);
         } catch (error) {
@@ -46,12 +52,12 @@ function ManageAttendance() {
         <div>
             <h2>Mark Student Attendance</h2>
             <div>
-                <input
+                {/* <input
                     type="text"
                     placeholder="Professor ID"
                     value={profId}
                     onChange={(e) => setProfId(e.target.value)}
-                />
+                /> */}
                 <input
                     type="text"
                     placeholder="Class ID"

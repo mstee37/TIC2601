@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import { useContext } from "react";
+
+import { UserContext } from "../contexts/UserContext";
+
 const FeedbackForm = () => {
+
+    const userID = useContext(UserContext).user;
+
     const [feedback, setFeedback] = useState({
-        StuID: '', // Student ID
+        StuID: userID, // Student ID
         ClsID: '', // Class ID
         Feedback: '', // Feedback text
     });
@@ -33,7 +40,7 @@ const FeedbackForm = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
+            {/* <div>
                 <label htmlFor="StuID">Student ID:</label>
                 <input
                     type="text"
@@ -42,7 +49,7 @@ const FeedbackForm = () => {
                     value={feedback.StuID}
                     onChange={handleInputChange}
                 />
-            </div>
+            </div> */}
             <div>
                 <label htmlFor="ClsID">Class ID:</label>
                 <input

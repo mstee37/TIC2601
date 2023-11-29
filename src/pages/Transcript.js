@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import { useContext } from "react";
+
+import { UserContext } from "../contexts/UserContext";
+
 function ViewTranscript() {
     const [studentId, setStudentId] = useState('');
     const [allTranscripts, setAllTranscripts] = useState([]);
     const [filteredTranscripts, setFilteredTranscripts] = useState([]);
+
+    const userID = useContext(UserContext).user;
 
     useEffect(() => {
         // Fetch all transcripts initially
@@ -22,7 +28,7 @@ function ViewTranscript() {
 
     const handleFetchTranscript = () => {
         // Filter transcripts based on the entered student ID
-        const filtered = allTranscripts.filter(transcript => transcript.StuID.toString() === studentId);
+        const filtered = allTranscripts.filter(transcript => transcript.StuID.toString() === userID);
         setFilteredTranscripts(filtered);
     };
 
@@ -30,13 +36,13 @@ function ViewTranscript() {
         <div>
             <h2>View Transcript</h2>
             <div>
-                <label htmlFor="studentId">Student ID:</label>
+                {/* <label htmlFor="studentId">Student ID:</label>
                 <input
                     type="text"
                     id="studentId"
                     value={studentId}
                     onChange={(e) => setStudentId(e.target.value)}
-                />
+                /> */}
                 <button onClick={handleFetchTranscript}>Fetch Transcript</button>
             </div>
             {filteredTranscripts.length > 0 && (
