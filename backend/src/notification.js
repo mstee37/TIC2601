@@ -12,7 +12,7 @@ router.route('/')
         var CourseIDs = req.query.CourseID; 
         models.Notification.findAll({
             order: [
-                [ 'DateTime', 'DESC']
+                ['createdAt', 'DESC']
               ],
               where:{CourseID:CourseIDs}
         }
@@ -27,7 +27,7 @@ router.route('/')
         var CourseID = req.body.CourseID;
         var Message = req.body.Message;      
 
-        models.Notification.create({ CourseID : CourseID, Message: Message}).then(() => {
+        models.Notification.create({ CourseID : CourseID,DateTime: new Date() ,Message: Message}).then(() => {
             res.sendStatus(200);
         }).catch(() => {
             res.sendStatus(400);

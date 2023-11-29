@@ -6,6 +6,7 @@ export default function MainPageProf() {
             <h2>Professor Main Page</h2>
             <ul>
                 <li><Link to='/MarkAttendance'>Mark Attendance</Link></li>
+                <li><Link to='/Grading'>Grading</Link></li>
             </ul>
         </>
     );

@@ -253,7 +253,7 @@ const Notification = sequelize.define('Notification', {
         type: DataTypes.STRING(10),
       },
       DateTime: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         defaultValue: new Date(),
         allowNull: false,
       },
