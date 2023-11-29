@@ -29,11 +29,25 @@ router.route('/status')
     })
 
 router.route('/')
-    .get((req, res) => { // to get student List
+    .get((req, res) => { // to get student List OR course ID
         console.log('GET: /student');
+        if(req.query.SID){
+            console.log('GET: /student?SID='+req.query.SID);
+            var SIDs = req.query.SID;
+            models.Student.findByPk(SIDs).then((studentid)=>{
+                if(studentid === null){
+                    res.sendStatus(404);
+                }
+                else{
+                    res.send(studentid.SCourseID);
+                }
+            })
+
+        }else{
         models.Student.findAll().then((students) => {
             res.send(students);
         })
+        }
     })
     
     .post((req, res) => { // to create student details
