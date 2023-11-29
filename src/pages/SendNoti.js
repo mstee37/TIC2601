@@ -7,26 +7,13 @@ import { useEffect } from "react";
 
         const [course, setCourse] = useState('');
         const [message, setMessage] = useState('');
-
+        const [submitStatus, setSubmitStatus] = useState('');
 
 
         const notiHandler = (e) => {
             setMessage(e.target.value);
+            setSubmitStatus('');
         }
-
-
-        // useEffect(
-        //     () => {
-        //     axios.get('http://localhost:3001/notification',{params: 
-        //     {'Course': course}}).then((response) => {
-        //             //console.log(response.data);
-        //             setDataSent(response.data);
-        //             //NEED TO TRANSFER THE DATA TO MESSAGE AND DATE
-
-        //         })
-        //     }, [module]
-        // )
-
 
         function submitNoti()
         {
@@ -37,20 +24,17 @@ import { useEffect } from "react";
             var noti = {'CourseID': course, 'Message':message}
             axios.post('http://localhost:3001/notification', noti).then((response=>{
                 console.log(response.status);
+                setSubmitStatus('A new notification has been successfully submitted!');
             }))
+            .catch((error)=>{
+                if(error.response){
+                    alert("An error has occurred and failed to create notification!");
+                }
+                else{
+                    console.log('Error', error.message);
+                }
+            })
 
-            //add to set message
-            // useEffect(
-            //     () => {
-            //     axios.get('http://localhost:3001/notification',{params: 
-            //     {'CourseID': course, 
-            //    }}).then((response) => {
-            //             console.log(response.data);
-            //             //setGrade(response.data);
-            //             //setMessage(response.data);
-            //         })
-            //     }, [course]
-            // )
         }
 
         return (
@@ -70,6 +54,9 @@ import { useEffect } from "react";
                     </div>
                     <div>
                         <textarea className="noti-box" value={message} onChange={notiHandler} ></textarea>
+                    </div>
+                    <div>
+                        {submitStatus}
                     </div>
                     <button type="submit" onClick={submitNoti}>Submit</button>
                 </div>

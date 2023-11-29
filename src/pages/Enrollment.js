@@ -5,16 +5,17 @@ import axios from "axios";
 
 function TableRowEnrollment(){
 
-    const{status, setStatus, course, setCourse} = useContext(EnrollmentToEditContext);
+    const{status, setStatus, course, setCourse, reloadRow, setReloadRow} = useContext(EnrollmentToEditContext);
 
     const handleStatusChange = (studentId, status_selected)=> {
         setStatus(status.map(statuses =>
             statuses.SID === studentId ? { ...statuses, SStatus: status_selected } : statuses
             
         ));
+        
     };
 
-   
+    
 
     return(
         <>
@@ -47,7 +48,9 @@ function TableEnrollment(){
     function processForm(){
         console.log(course);
 
-        for(var x=0;x<status.length;x++)
+
+        try{
+            for(var x=0;x<status.length;x++)
         {
             let obj = status[x];
 
@@ -58,6 +61,17 @@ function TableEnrollment(){
                 console.log(response.status);
             }))
         }
+
+        alert("Enrollment Data successfully updated");
+        setCourse("");
+        }
+        catch(e){
+            console.log(e);
+        }
+        
+        
+        
+        
 
     }
 
@@ -98,10 +112,11 @@ export default function Enrollment(){
     )
 
     const [course, setCourse] = useState('');
+    const [reloadRow, setReloadRow] = useState(true);
 
 
     useEffect(
-        () => {
+        () => { 
         axios.get('http://localhost:3001/courseEnrollment',{params: 
         {'SCourseID':course,}}).then((response) => {
                 console.log(response.data);
@@ -109,13 +124,15 @@ export default function Enrollment(){
             })
         }, [course]
     )
+    
 
 
     return(
         <>
             <EnrollmentToEditContext.Provider value={{
                 status, setStatus,
-                course, setCourse
+                course, setCourse,
+                reloadRow, setReloadRow
             }}>
             <div className="row" style={{ width: '100%' }}>
                 <div style={{ width: '100%', float: 'left' }}>

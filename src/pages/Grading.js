@@ -2,7 +2,6 @@ import { useContext, useState, useEffect } from "react";
 import { GradingToEditContext } from "../contexts/GradingToEditContext";
 import DropdownCourse from "../components/DropdownCourse";
 import DropdownModule from "../components/DropdownModule";
-import DropdownClass from "../components/DropdownClass";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
 
@@ -20,12 +19,6 @@ function Selection(){
                         <td width={'20%'}><b>Module Name</b></td>
                         <td>
                             <DropdownModule value={module} setValue={setModule} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><b>Class ID</b></td>
-                        <td>
-                            <DropdownClass value={classes} setValue={setClasses} />
                         </td>
                     </tr>
                     <tr>
@@ -54,14 +47,6 @@ function TableRowGrading(){
         ));
     };
 
-
-    // useEffect(
-    //     () => {
-    //         axios.get('http://localhost:3001/transcript',{params: {'ProfID ' : {user}},{'ModID' : {module}} }).then((response) => {
-    //             setClasses(response.data);
-    //         })
-    //     }, [classes]
-    // )
     
     return(
 
@@ -127,32 +112,6 @@ function TableGrading(){
             }))
         }
 
-        // axios.post('http://localhost:3001/transcript', grade).then((response=>{
-        //     console.log(response.status);
-            
-        // }))
-        //console.log({user});
-
-        // var params = new URLSearchParams();
-        // params.append("ProfID", user);
-        // params.append("ModID", module);
-        // var request = {
-        //     params: params
-        // };
-
-        // const searchParams = new URLSearchParams();
-        // searchParams.append('ProfID', user);
-        // searchParams.append('ModID', module);
-        //console.log(searchParams.toString());
-
-    //     axios.get('http://localhost:3001/transcript',searchParams).then((response) => {
-    //             //setClasses(response.data);
-    //             console.log(module);
-    //             console.log(response.data);
-    // })
-
-        
-
     
     }
     
@@ -182,12 +141,7 @@ function TableGrading(){
 
 export default function Grading(){
 
-    // const[grade, setGrade] = useState(
-    //     [
-    //         {'StuID' : 'S001', 'ModID' : 'TIC2301', 'Grade' : 'TBD', 'TYear' : 2},
-    //         {'StuID' : 'S002', 'ModID' : 'TIC2601', 'Grade' : 'TBD', 'TYear' : 2}
-    //     ]
-    // )
+  
     const[grade, setGrade] = useState(
         []
     )

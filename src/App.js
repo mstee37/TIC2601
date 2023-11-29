@@ -27,10 +27,11 @@ import Enrollment from "./pages/Enrollment";
 function App() {
   //<Route path="Index" element={<Index />} />
   const [user, setUser] = useState('');
+  const [noti, setNoti] = useState('');
 
   return (
 
-    <UserContext.Provider value={{user, setUser}}>
+    <UserContext.Provider value={{user, setUser, noti, setNoti}}>
     <BrowserRouter>
       <Routes>
 

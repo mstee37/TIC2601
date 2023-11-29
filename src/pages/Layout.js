@@ -1,13 +1,20 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import axios from "axios";
+
+
+axios.defaults.headers.put['Content-Type'] = 'application/json';
 
 
 function CheckUser(){
 
     const {user, setUser} = useContext(UserContext);
     const navigate = useNavigate();
+    const {noti, setNoti} = useContext(UserContext);
     var role = user.charAt(0);
+
+    
 
     function navigateRolePage()
     {
@@ -31,6 +38,7 @@ function CheckUser(){
             <>
                 <div>
                     <h1>Welcome back, {user}</h1>
+                    <h3>{noti}</h3>
                     <input type={'button'} value='Home' onClick={navigateRolePage} ></input>
                 </div>
             </>
@@ -41,11 +49,13 @@ function CheckUser(){
 
 export default function Layout() {
     const {user, setUser} = useContext(UserContext);
+    const {noti, setNoti} = useContext(UserContext);
     const navigate = useNavigate();
 
     
     function logout(){
         setUser('');
+        setNoti('');
         navigate('/Login');
     }
 
@@ -62,7 +72,6 @@ export default function Layout() {
             
             <hr />
             <input type={'button'} value='Logout' onClick={logout}/>
-            <Link to='/Index'>Stuck</Link>
         </>
     )
 };

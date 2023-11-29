@@ -23,19 +23,36 @@ function InputFormCourse(){
         if(editMode === 'create')
         {
             var newCourse = {'CourseID' : CourseIDToEdit, 'CourseName':CourseNameToEdit, 'CourseTotalMC' : CourseTotalMCToEdit, 'CourseDescription' : CourseDescriptionToEdit}
-            axios.put('http://localhost:3001/course', newCourse).then((response)=>{
+            axios.post('http://localhost:3001/course', newCourse).then((response)=>{
                 resetInputState();
                 setReloadCourse(!reloadCourse)
+            })
+            .catch((error)=>{
+                if(error.response){
+                    alert("An error has occurred and failed to create course!");
+                }
+                else{
+                    console.log('Error', error.message);
+                }
             })
         }
         else if(editMode === 'edit')
         {
             var courses = {'CourseID': CourseIDToEdit, 'CourseName': CourseNameToEdit, 'CourseTotalMC' : CourseTotalMCToEdit, 'CourseDescription' : CourseDescriptionToEdit}
-            axios.post('http://localhost:3001/course', courses).then((response=>{
+            axios.put('http://localhost:3001/course', courses).then((response=>{
                 resetInputState();
                 setReloadCourse(!reloadCourse);
                 setEditMode('create');
             }))
+            .catch((error)=>{
+                if(error.response){
+                    alert("An error has occurred and failed to update course!");
+                    resetInputState();
+                }
+                else{
+                    console.log('Error', error.message);
+                }
+            })
 
             
         }

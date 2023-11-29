@@ -11,14 +11,11 @@ export default function Login(){
     const [password, setPassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const navigate = useNavigate();
-
     const {user, setUser} = useContext(UserContext);
+    
 
-    // useEffect(
-    //     ()=>{
+    
 
-    //     },[]
-    // )
 
     function checkPassword(pw1,pw2, role){
         console.log(pw1);
@@ -26,12 +23,12 @@ export default function Login(){
         console.log(role);
 
         if(pw1 !== pw2){
-            console.log("not the same");
             setUID('');
             setPassword('');
-            setErrMsg("Wrong Email/Password");
+            setErrMsg("Wrong ID/Password!");
         }
         else{
+            
             setUser(uid);
             
             if(role === "professor")
@@ -56,6 +53,20 @@ export default function Login(){
             console.log(response.data);
             checkPassword(response.data.UPassword, password, response.data.URole);
         }))
+        .catch((error)=>{
+            if(error.response){
+                setErrMsg("Wrong ID/Password!");
+                setUID('');
+                setPassword('');
+            }
+            else{
+                console.log('Error', error.message);
+            }
+        })
+
+
+        //checkLoginStatus();
+        
     }
 
 
@@ -63,6 +74,7 @@ export default function Login(){
     <div className="div-login">
         <label>User ID : 
             <input type="text" value = {uid} onChange={(event) => {
+                setErrMsg('');
                 setUID(event.target.value);
             }}/>
         </label>
@@ -70,9 +82,13 @@ export default function Login(){
     <div className="div-login">
         <label>Password: 
             <input type="password" value = {password} onChange={(event) => {
+                setErrMsg('');
                 setPassword(event.target.value);
             }}/>
         </label>
+    </div>
+    <div>
+        <h5>{errMsg}</h5>
     </div>
     <div>
         <input type={'button'} value='Login' onClick={processForm} />

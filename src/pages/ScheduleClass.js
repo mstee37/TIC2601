@@ -5,6 +5,7 @@ import InputTime from "../components/InputTime";
 import InputId from "../components/InputId";
 import { Link } from "react-router-dom";
 import { ClassToEditContext } from "../contexts/ClassToEditContext";
+import DropdownModule from "../components/DropdownModule";
 
 
 import axios from 'axios';
@@ -44,7 +45,7 @@ function InputFormClass(){
         {
             //var newClasses = {'CID': CIDToEdit, 'ModID' : ModIDToEdit, 'RoomNo' : RoomNoToEdit, 'StartDate': StartDateToEdit, 'EndDate' : EndDateToEdit, 'StartTime':StartTimeToEdit, 'EndTime': EndTimeToEdit};
             var newClasses = {'CID': CIDToEdit, 'ModID' : ModIDToEdit, 'RoomNo' : RoomNoToEdit,'StartDate': StartDateToEdit, 'EndDate' : EndDateToEdit};
-            axios.put('http://localhost:3001/class', newClasses).then((response)=>{
+            axios.post('http://localhost:3001/class', newClasses).then((response)=>{
                 resetInputState();
                 setReloadClasses(!reloadClasses);
             })
@@ -53,11 +54,20 @@ function InputFormClass(){
             
             var class_selected = {'CID': CIDToEdit, 'ModID' : ModIDToEdit, 'RoomNo' : RoomNoToEdit, 'StartDate': StartDateToEdit, 'EndDate' : EndDateToEdit};
             //var class_selected = {'CID': CIDToEdit, 'ModID' : ModIDToEdit, 'RoomNo' : RoomNoToEdit, 'StartDate': StartDateToEdit, 'EndDate' : EndDateToEdit, 'StartTime':StartTimeToEdit, 'EndTime': EndTimeToEdit};
-            axios.post('http://localhost:3001/class', class_selected).then((response)=>{
+            axios.put('http://localhost:3001/class', class_selected).then((response)=>{
             resetInputState();
             setReloadClasses(!reloadClasses)
             setEditMode('create');
         })
+            .catch((error)=>{
+            if(error.response){
+                alert("An error has occurred and failed to create class!");
+            }
+            else{
+                console.log('Error', error.message);
+            }
+        })
+
         }
         
 
@@ -81,7 +91,8 @@ function InputFormClass(){
                     <tr>
                         <td><b>Mod ID</b></td>
                         <td>
-                            <InputId label='Mod ID' value={ModIDToEdit} setValue={setModIDToEdit} />
+                            {/* <InputId label='Mod ID' value={ModIDToEdit} setValue={setModIDToEdit} /> */}
+                            <DropdownModule value={ModIDToEdit} setValue={setModIDToEdit} />
                         </td>
                     </tr>
                     <tr>
@@ -99,7 +110,8 @@ function InputFormClass(){
                     <tr>
                         <td><b>End Date</b></td>
                         <td>
-                            <InputDate minDate='1990-01-01' maxDate='2100-01-01' value={EndDateToEdit} setValue={setEndDateToEdit} />
+                            {/* <InputDate minDate={'1990-01-01'} maxDate='2100-01-01' value={EndDateToEdit} setValue={setEndDateToEdit} /> */}
+                            <InputDate minDate={StartDateToEdit} maxDate='2100-01-01' value={EndDateToEdit} setValue={setEndDateToEdit} />
                         </td>
                     </tr>
                     
