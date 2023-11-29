@@ -89,7 +89,7 @@ function InputFormClass(){
                         </td>
                     </tr>
                     <tr>
-                        <td><b>Mod ID</b></td>
+                        <td><b>Module Name</b></td>
                         <td>
                             {/* <InputId label='Mod ID' value={ModIDToEdit} setValue={setModIDToEdit} /> */}
                             <DropdownModule value={ModIDToEdit} setValue={setModIDToEdit} />
